@@ -24,7 +24,7 @@ Colors.java: Colors class provides ANSI escape codes for text colors and methods
 CommonTileBehavior.java: Part of the TileBehavior Strategy Pattern that
 represents the behavior of a CommoneTile
 Constants.java: This class provides all global constants for any game.
-Coordinate.java: This class is used to implement Coordinate for each Tile
+Coordinate.java: This class is used to implement Coordinate for each MHTile
 Game.java: The hub for users to indicate which game to play.
 Hero.java: Class containing behavior and states of Hero objects
 HeroType.java: Enum used to represent the different possible types of heroes
@@ -37,7 +37,7 @@ holds the general behavior and data members necessary for an Item
 ItemFactory.java: Facotry responsible for loading all item .txt files, and is
 reponsible for housing all the create methods for the various items
 Main.java: This class is used to initalize the Game.
-MapFactory.java: Factory used to create a map (Tile[][])
+MapFactory.java: Factory used to create a map (MHTile[][])
 Market.java: Class housing all the behaviors and states of the Market interface
 of our of game
 MarketIO.java: a subclass of IO filled with specific queries and displays related
@@ -54,7 +54,7 @@ SpellType.java: Enum used to represent the different possible types of spells
 State.java: Enum used to represent the different possible types of states of a
 character, allows for scalability in the future if more states are to be added
 Summary.java: Class to give a summary of the user from playing the game
-Tile.java: Class that houses all the behaviors and states of Tile objects, part
+MHTile.java: Class that houses all the behaviors and states of MHTile objects, part
 of the Strategy Pattern of TileBehavior
 TileBehavior.java: A Java interface that implements the Strategy Pattern
 TileFactory.java: Factory responsible for creating Tiles of different TileBehavior
@@ -80,7 +80,7 @@ to write down some notes as to the structural relationship of the project at the
 end
 3-26 to 3-29: Start writing Battle, which I have not idea why took me so much time.
 3-29 to 3-30: Finished writing Battle and now it is down hill from here. Finished market, 
-then World, wrote the Tile- and Map-Facotry, and then pieced everything together.
+then World, wrote the MHTile- and Map-Facotry, and then pieced everything together.
 But due to the fact that a considerate amount of time was took to think about the
 relationship of objects, the process of putting things together was surprisingly easy.
 Then took sometime debug and wrote a bit of tutorial information.

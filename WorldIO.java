@@ -61,7 +61,7 @@ public class WorldIO extends IO{
     displayMsg(msg);
   }
 
-  public void displayWorldMap(Tile[][] map) {
+  public void displayWorldMap(MHTile[][] map) {
     System.out.println("");
 
     // the top most border
@@ -72,10 +72,10 @@ public class WorldIO extends IO{
     horitzontalBorder += "-";
     System.out.println(horitzontalBorder);
 
-    for (Tile[] row : map) {
+    for (MHTile[] row : map) {
       String rowContent = "|";
 
-      for (Tile tile : row) {
+      for (MHTile tile : row) {
         rowContent += " " + tile.toString(true) + " |";
       }
       System.out.println(rowContent);

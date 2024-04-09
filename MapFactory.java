@@ -11,7 +11,7 @@ import java.util.*;
 public class MapFactory {
   private static MapFactory instance;
   private TileFactory tfInstance;
-  private Tile[][] worldMap;
+  private MHTile[][] worldMap;
 
   private MapFactory() {
     tfInstance = TileFactory.getInstance();
@@ -26,12 +26,12 @@ public class MapFactory {
 
   // IMPORTANT NOTE!!!
   // HEIGHT == ROW == Y, WIDTH == COLUMN == X
-  public Tile[][] createWorld(int height, int width) {
+  public MHTile[][] createWorld(int height, int width) {
     boolean allTraversable = false;
 
     while (!allTraversable) {
       // create a new blank map
-      worldMap = new Tile[height][width];
+      worldMap = new MHTile[height][width];
 
       int totalTiles = width * height;
       // Integer division, fractional parts truncated
@@ -97,19 +97,19 @@ public class MapFactory {
   // 3.) after BFS, compare the set of visitedTiles to the union of Set<CommonTile> and Set<InaccessibleTile>
   //    if they are equal, then yes, all tiles are connected, else no
   public boolean verifyTileConnectivity() {
-    Tile startingTile = getStartingTile();
+    MHTile startingTile = getStartingTile();
     if (startingTile == null) {
       throw new IllegalArgumentException("This means the worldMap was " +
       "instantiated with all inaccessibleTiles, which should not be allowed.");
     }
 
-    Set<Tile> visitedTiles = new HashSet<>();
-    Set<Tile> commonAndInaccessibleTiles = new HashSet<>();
+    Set<MHTile> visitedTiles = new HashSet<>();
+    Set<MHTile> commonAndInaccessibleTiles = new HashSet<>();
 
     // Find all tiles that are not inaccessible
     for (int i = 0; i < worldMap.length; i++) {
       for (int j = 0; j < worldMap[0].length; j++) {
-        Tile currentTile = worldMap[i][j];
+        MHTile currentTile = worldMap[i][j];
         if (!(currentTile.getTileBehavior() instanceof InaccessibleTileBehavior)) {
           commonAndInaccessibleTiles.add(currentTile);
         } 
@@ -128,8 +128,8 @@ public class MapFactory {
     return visitedTiles.equals(commonAndInaccessibleTiles);
   }
 
-  private Tile getStartingTile() {
-    Tile startingTile = null;
+  private MHTile getStartingTile() {
+    MHTile startingTile = null;
     // To get a starting tile
     for (int i = 0; i < worldMap.length; i++) { // i == ROW 
       for (int j = 0; j < worldMap[0].length; j++) { // j == COL
@@ -142,19 +142,19 @@ public class MapFactory {
     return startingTile;
   }
 
-  private void BFS(Tile startingTile, Set<Tile> visitedTiles) {
-    Queue<Tile> queue = new LinkedList<Tile>();
+  private void BFS(MHTile startingTile, Set<MHTile> visitedTiles) {
+    Queue<MHTile> queue = new LinkedList<MHTile>();
 
     // init
     visitedTiles.add(startingTile);
     queue.offer(startingTile);
 
     while (!queue.isEmpty()) {
-      Tile currentTile = queue.poll();
+      MHTile currentTile = queue.poll();
 
-      Set<Tile> neighbors = getNeighbors(currentTile);
+      Set<MHTile> neighbors = getNeighbors(currentTile);
 
-      for (Tile tile : neighbors) {
+      for (MHTile tile : neighbors) {
         // For tiles we have not visited yet, we will queue them and visit them
         // next
         if (!visitedTiles.contains(tile) && !(tile.getTileBehavior() instanceof InaccessibleTileBehavior)) {
@@ -166,8 +166,8 @@ public class MapFactory {
   }
 
   // HEIGHT == ROW == Y, WIDTH == COLUMN == X
-  private Set<Tile> getNeighbors(Tile tile) {
-    Set<Tile> validNeighbors = new HashSet<Tile>();
+  private Set<MHTile> getNeighbors(MHTile tile) {
+    Set<MHTile> validNeighbors = new HashSet<MHTile>();
     // get the cardinal adjacents
     // remember not to index out of bound
     

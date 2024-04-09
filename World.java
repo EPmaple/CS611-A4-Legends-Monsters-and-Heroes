@@ -12,13 +12,13 @@ import java.util.List;
 public class World {
   private WorldIO io;
   private boolean onMarketTile = false;
-  private Tile[][] worldMap;
+  private MHTile[][] worldMap;
   private List<Hero> heroes;
-  private Tile currentTile;
+  private MHTile currentTile;
   /*
    * Pass in: heroes, worldMap, WorldIO
    */
-  public World(Tile[][] worldMap, List<Hero> heroes) {
+  public World(MHTile[][] worldMap, List<Hero> heroes) {
     this.io = WorldIO.getInstance();
     setWorldMap(worldMap);
     setHeroes(heroes);
@@ -28,7 +28,7 @@ public class World {
   private void setStartingTile() {
     for (int i = 0; i < worldMap.length ; i++) {
       for (int j = 0 ; j < worldMap[0].length ; j++) {
-        Tile currTile = worldMap[i][j];
+        MHTile currTile = worldMap[i][j];
 
         if (!(currTile.getTileBehavior() instanceof InaccessibleTileBehavior)) {
           if (currentTile == null) {
@@ -49,22 +49,22 @@ public class World {
       String action = io.queryForUserActionInWorld(onMarketTile);
 
       if (action.equalsIgnoreCase("W")) {
-        Tile nextTile = getUpTile();
+        MHTile nextTile = getUpTile();
         boolean moveSuccessful = move(nextTile);
         io.displayMovementMsg(moveSuccessful);
 
       } else if (action.equalsIgnoreCase("A")) {
-        Tile nextTile = getLeftTile();
+        MHTile nextTile = getLeftTile();
         boolean moveSuccessful = move(nextTile);
         io.displayMovementMsg(moveSuccessful);
 
       } else if (action.equalsIgnoreCase("S")) {
-        Tile nextTile = getDownTile();
+        MHTile nextTile = getDownTile();
         boolean moveSuccessful = move(nextTile);
         io.displayMovementMsg(moveSuccessful);
 
       } else if (action.equalsIgnoreCase("D")) {
-        Tile nextTile = getRightTile();
+        MHTile nextTile = getRightTile();
         boolean moveSuccessful = move(nextTile);
         io.displayMovementMsg(moveSuccessful);
 
@@ -124,7 +124,7 @@ public class World {
    */
 
   // A method for moving the heroes from one tile to another tile
-  public boolean move(Tile nextTile) {
+  public boolean move(MHTile nextTile) {
     if (nextTile == null) { // Meaning it is out of bounds
       // print "cannot move to this tile"
       System.out.println("nextTile is null");
@@ -184,7 +184,7 @@ public class World {
   }
 
   // So the querying has to get the values that are within bound
-  public void setWorldMap(Tile[][] worldMap) {
+  public void setWorldMap(MHTile[][] worldMap) {
     if (worldMap == null || !verifyMapValidity(worldMap)) {
       throw new IllegalArgumentException("The input worldMap is not a valid "+
       "map, as it is null or its tiles may be null.");
@@ -192,7 +192,7 @@ public class World {
     this.worldMap = worldMap;
   }
 
-  private boolean verifyMapValidity(Tile[][] worldMap) {
+  private boolean verifyMapValidity(MHTile[][] worldMap) {
     for (int i = 0; i < worldMap.length ; i++) {
       for (int j = 0; j < worldMap[0].length ; j++) {
         if (worldMap[i][j] == null) {
@@ -234,7 +234,7 @@ public class World {
 
   // *****************************************************************
 
-  private Tile getUpTile() {
+  private MHTile getUpTile() {
     int currX = currentTile.getCoordinate().getXCoordinate();
     int currY = currentTile.getCoordinate().getYCoordinate();
     if (isInBounds(currX, currY-1)) {
@@ -243,7 +243,7 @@ public class World {
     }
     return null;
   }
-  private Tile getLeftTile() {
+  private MHTile getLeftTile() {
     int currX = currentTile.getCoordinate().getXCoordinate();
     int currY = currentTile.getCoordinate().getYCoordinate();
     if (isInBounds(currX-1, currY)) {
@@ -252,7 +252,7 @@ public class World {
     }
     return null;
   }
-  private Tile getDownTile() {
+  private MHTile getDownTile() {
     int currX = currentTile.getCoordinate().getXCoordinate();
     int currY = currentTile.getCoordinate().getYCoordinate();
     if (isInBounds(currX, currY+1)) {
@@ -261,7 +261,7 @@ public class World {
     }
     return null;
   }
-  private Tile getRightTile() {
+  private MHTile getRightTile() {
     int currX = currentTile.getCoordinate().getXCoordinate();
     int currY = currentTile.getCoordinate().getYCoordinate();
     if (isInBounds(currX+1, currY)) {

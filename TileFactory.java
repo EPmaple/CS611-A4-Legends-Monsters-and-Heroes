@@ -24,15 +24,15 @@ public class TileFactory {
   }
 
 
-  public Tile createInaccessibleTile(Coordinate coordinate) {
-    return new Tile(new InaccessibleTileBehavior(), coordinate);
+  public MHTile createInaccessibleTile(Coordinate coordinate) {
+    return new MHTile(new InaccessibleTileBehavior(), coordinate);
   }
 
-  public Tile createCommonTile(Coordinate coordinate) {
-    return new Tile(new CommonTileBehavior(), coordinate);
+  public MHTile createCommonTile(Coordinate coordinate) {
+    return new MHTile(new CommonTileBehavior(), coordinate);
   }
 
-  public Tile createMarketTile(Coordinate coordinate) {
+  public MHTile createMarketTile(Coordinate coordinate) {
     // To create stock for market tile
     List<Item> stock = new ArrayList<Item>();
 
@@ -40,7 +40,7 @@ public class TileFactory {
       stock.add(ifInstance.createItem());
     }
 
-    return new Tile(new MarketTileBehavior(stock), coordinate);
+    return new MHTile(new MarketTileBehavior(stock), coordinate);
   }
 }
 

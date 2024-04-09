@@ -68,6 +68,10 @@ public class Monster extends Character{
     }
   }
 
+  public void attack(){
+
+  }
+
   public void castSpell(Spell spell, Character target, BattleMechanics bm, BattleIO io) {
     throw new IllegalArgumentException("The feature for monsters to cast a spell " +
     "is not supported at this moment.");

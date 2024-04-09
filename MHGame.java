@@ -64,7 +64,7 @@ public class MHGame {
       }
     }
 
-    Tile[][] worldMap = mfInstance.createWorld(height, width);
+    MHTile[][] worldMap = mfInstance.createWorld(height, width);
 
     // fourth, party formed, can now pass heroes to the world and start the
     // game
