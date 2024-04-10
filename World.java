@@ -271,7 +271,7 @@ public class World {
     return null;
   }
 
-  private boolean isInBounds(int xIndex, int yIndex) {
+  protected boolean isInBounds(int xIndex, int yIndex) {
     if ((xIndex >= 0 && xIndex < worldMap[0].length ) && 
     (yIndex >= 0 && yIndex < worldMap.length )) {
       return true;
@@ -279,7 +279,7 @@ public class World {
     return false;
   }
 
-  private boolean isInBounds(Coordinate coodinate) {
+  protected boolean isInBounds(Coordinate coodinate) {
     int currX = coodinate.getXCoordinate();
     int currY = coodinate.getYCoordinate();
 
