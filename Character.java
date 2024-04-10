@@ -14,12 +14,26 @@ public abstract class Character {
   protected State state; // Either FAINTED, or CONSCIOUS;
   protected int defense;
 
+  protected Tile currentTile; // added to keep track of character
+
   public Character(String name, int level, int HP, State state, int defense) {
     setName(name);
     setLevel(level);
     setHP(HP);
     setState(state);
     setDefense(defense);
+  }
+
+  // Tile
+  public void setCurrentTile(Tile tile) {
+    if (tile == null || tile.getTileBehavior() instanceof InaccessibleTileBehavior) {
+      throw new IllegalArgumentException("A hero cannot be on a null or inaccessible "+
+              "tile.");
+    }
+    this.currentTile = tile;
+  }
+  public Tile getCurrentTile() {
+    return this.currentTile;
   }
 
   // NAME
