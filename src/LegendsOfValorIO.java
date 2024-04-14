@@ -18,7 +18,14 @@ public class LegendsOfValorIO extends IO{
     // display
 
     public void displayTutorial() {
-        String msg = "Tutorial for Legends of Valor has not been implemented yet!";
+        String msg = "Basic Actions:\n" +
+                "MOVEMENT: The W/A/S/D keys allow you to move, press them to go up/left/down/right respectively.\n" +
+                "INVENTORY: Press U to access your heroes inventories, you will need to specify which hero's inventory to access after pressing U.\n" +
+                "INFORMATION: Press I to display Hero or Monster inventory, you will need to specify if you want to see Hero or Monster info after pressing I.\n"+
+                "MARKETS: When on a nexus tile, press M to access its market, this option cannot be executed unless a Hero is standing on one of the nexus tiles\n" +
+                "TUTORIAL: Obviously, T displays the tutorial\n" +
+                "TELEPORTATION TO NEXUS: Press R to teleport a hero back to their nexus, you will need to specify which hero to teleport after pressing R\n" +
+                "ATTACKING: Press F to attack with a hero, you will need to specify which hero to attack with after pressing F\n";
         displayMsg(msg);
     }
 
