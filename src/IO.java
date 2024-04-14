@@ -119,9 +119,10 @@ public class IO {
 
   public Integer queryForGameSelection() {
     String msg = "Welcome! Please enter the number for the game you want ot play: \n";
-    msg += "[0] Legends: Monsters and Heroes";
+    msg += "[0] Legends: Monsters and Heroes\n";
+    msg += "[1] Legends of Valor";
 
-    int selectionIndex = queryInt(msg, 0, 0);
+    int selectionIndex = queryInt(msg, 0, 1);
 
     return selectionIndex;
   }

@@ -6,10 +6,12 @@
  * This class is used to initalize the Game.
  */
 
+import src.GameManager;
+
 public class Main {
   public static void main(String[] args) {
-    Game game = new Game(new IO());
-    game.gameStart();
+    GameManager gameManager = new GameManager(new IO());
+    gameManager.gameStart();
 
   }
 }

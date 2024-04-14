@@ -41,7 +41,24 @@ public class LVMap extends Board{
 
     // *******************************************************
 
-    public List<Integer> getLanesForTeleportation(LVCell currentTile) {
+    public List<Integer> getLanesForTeleportation(LVCell currentTile, List<Hero> heroes) {
+        List<Integer> lanesAvailable = new ArrayList<Integer>();
+        List<Hero> tempHeroes = new ArrayList<>(heroes);
+        int currentTileCol = currentTile.getCol();
+        /*
+        we will iterate through all heroes, except currentHero, to determine the lanes
+        available for tp
+         */
+        for (Hero hero : heroes) {
+            int heroCol = hero.getCol();
+            for (Integer i = 0; i < 3; i++) {
+                if (3 * i + 1 == heroCol || 3 * i == heroCol) {
+                    lanesAvailable.add(i);
+                }
+            }
+        }
+
+
         List<Integer> lanesAvailable = new ArrayList<Integer>();
         lanesAvailable.addAll(Arrays.asList(1, 2, 3));
 
@@ -59,6 +76,20 @@ public class LVMap extends Board{
                     "a hero on the board is correct.");
         }
 
+        int counter = 0; // to make sure there is a hero in the lane to be teleported to
+        for (Integer laneNum : lanesAvailable) {
+            for (Hero hero : heroes) {
+                int heroCol = hero.getCol();
+                if (3 * (laneNum - 1) + 1 == heroCol || 3 * (laneNum - 1) == heroCol) {
+                    counter += 1;
+                }
+            }
+            if (counter == 0) {
+                lanesAvailable.remove(Integer.valueOf(laneNum));
+            }
+        }
+
+        System.out.println(lanesAvailable.toString());
         return lanesAvailable;
     }
 
