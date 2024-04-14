@@ -13,6 +13,8 @@ public abstract class Character {
   protected int HP;
   protected State state; // Either FAINTED, or CONSCIOUS;
   protected int defense;
+  protected int row;
+  protected int col;
 
   protected Tile currentTile; // added to keep track of character
 
@@ -99,6 +101,22 @@ public abstract class Character {
     
     io.displayDamageTakenMsg(this);
   }
+  
+  public void setRow(int r) {
+		 row = r;
+	 }
+	 
+	 public void setCol(int c) {
+		 col = c;
+	 }
+	 
+	 public int getRow() {
+		 return row;
+	 }
+	 
+	 public int getCol() {
+		 return col;
+	 }
 
   public abstract void attack(Character target, BattleMechanics bm, BattleIO io);
   public abstract void castSpell(Spell spell, Character target, BattleMechanics bm, BattleIO io);

@@ -20,6 +20,11 @@ public abstract class Hero extends Character{
   protected Weapon equippedWeapon;
   protected Armor equippedArmor;
   protected List<Item> inventory;
+  protected int tileStrength;
+  protected int tileAgility;
+  protected int tileDexterity;
+  private int mana;
+  private int money;
 
   public Hero(String name, int level, int HP, State state, int MP, int strength,
   int agility, int dexterity, int defense, int gold, int experience,
@@ -37,7 +42,16 @@ public abstract class Hero extends Character{
     setEquippedArmor(armor);
     this.inventory = inventory;
   }
-
+  
+  public Hero(String n, int mana, int stre, int agi, int dex, int money, int exp, int hp, int defence, int level, State state) {
+	  super(n, level, hp, state, defence);
+	  this.setMana(mana);
+      this.strength= stre;
+      this.agility=agi;
+      this.dexterity= dex;
+      this.setMoney(money);
+      this.experience = exp;
+  }
 
   // ************************************************************
 
@@ -385,6 +399,37 @@ public abstract class Hero extends Character{
   public List<Item> getInventory() {
     return this.inventory;
   }
+  
+  //CellBoost
+  public int getTileStrength() {
+		return tileStrength;
+	}
+
+
+	public void setTileStrength(int tileStrength) {
+		this.tileStrength = tileStrength;
+	}
+
+
+	public int getTileAgility() {
+		return tileAgility;
+	}
+
+
+	public void setTileAgility(int tileAgility) {
+		this.tileAgility = tileAgility;
+	}
+
+
+	public int getTileDexterity() {
+		return tileDexterity;
+	}
+
+
+	public void setTileDexterity(int tileDexterity) {
+		this.tileDexterity = tileDexterity;
+	}
+
 
   @Override
   public String toString() {
@@ -431,4 +476,21 @@ public abstract class Hero extends Character{
 
     return returnStr;
   }
+
+public int getMana() {
+	return mana;
+}
+
+public void setMana(int mana) {
+	this.mana = mana;
+}
+
+public int getMoney() {
+	return money;
+}
+
+public void setMoney(int money) {
+	this.money = money;
+}
+
 }
