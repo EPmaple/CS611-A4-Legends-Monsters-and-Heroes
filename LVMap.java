@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class LVMap extends Board{
 	//the class represents board of Legeand of Valor game
@@ -28,11 +31,120 @@ public class LVMap extends Board{
     
     public boolean checkCellAccess(int row, int col){
 		LVCell temp = getCell(row, col);
-        char[] pos = temp.getPositions();
-        if(pos[0] != ' ' || row>7 || col>7 || row<0 || col<0) {
+        String[] pos = temp.getPositions();
+        if(pos[0].trim().isEmpty() || row>7 || col>7 || row<0 || col<0) {
 			return true;
 		}else {
 			return false;
 		}
 	}
+
+    // *******************************************************
+
+    public List<Integer> getLanesForTeleportation(LVCell currentTile) {
+        List<Integer> lanesAvailable = new ArrayList<Integer>();
+        lanesAvailable.addAll(Arrays.asList(1, 2, 3));
+
+        // 0 1 |2| 3 4 |5| 6 7
+        if (currentTile.getCol() == 0 || currentTile.getCol() == 1) {
+            lanesAvailable.remove(Integer.valueOf(1));
+        } else if (currentTile.getCol() == 3 || currentTile.getCol() == 4) {
+            lanesAvailable.remove(Integer.valueOf(2));
+        } else if (currentTile.getCol() == 6 || currentTile.getCol() == 7) {
+            lanesAvailable.remove(Integer.valueOf(3));
+        } else {
+            throw new IllegalArgumentException("You have reached the else "+
+                    "statement of LVMap.getLanesForTeleportation(), which "+
+                    "should not happen if the logic for moving and placing "+
+                    "a hero on the board is correct.");
+        }
+
+        return lanesAvailable;
+    }
+
+    // return true if the row does have monster
+    // return false if the row does not have monster
+    public boolean checkRowForMonster(LVCell currentTile) {
+        // isCurrentTileEmpty, specifically means: there is no monster in this
+        // tile, right?
+        boolean currentTileHasMonster = false;
+        if (!currentTile.getPositions()[1].trim().isEmpty()) {
+            currentTileHasMonster = true;
+        }
+
+        boolean adjacentTileHasMonster = false;
+        // go in the left direction
+        LVCell leftTile = getLeftTile(currentTile);
+        if (leftTile != null) { // tile isInBounds
+            if (leftTile.getTileType() != '&') { // tile is not NonAccessible
+                // Tile has a monster
+                if (!leftTile.getPositions()[1].trim().isEmpty()) {
+                    adjacentTileHasMonster = true;
+                }
+            }
+        }
+        // go in the right direction
+        LVCell rightTile = getRightTile(currentTile);
+        if (rightTile != null) { // tile isInBounds
+            if (rightTile.getTileType() != '&') { // tile is not NonAccessible
+                // Tile has a monster
+                if (!rightTile.getPositions()[1].trim().isEmpty()) {
+                    adjacentTileHasMonster = true;
+                }
+            }
+        }
+
+        return currentTileHasMonster && adjacentTileHasMonster;
+    }
+
+    /*
+    board:
+        col 0 1 2
+    row
+    0
+    1
+    2
+     */
+    public LVCell getUpTile(LVCell tile) {
+        int row = tile.getRow();
+        int col = tile.getCol();
+        if (isInBounds(row - 1, col)) {
+            return getCell(row - 1, col);
+        }
+        return null;
+    }
+    public LVCell getDownTile(LVCell tile) {
+        int row = tile.getRow();
+        int col = tile.getCol();
+        if (isInBounds(row + 1, col)) {
+            return getCell(row + 1, col);
+        }
+        return null;
+    }
+    public LVCell getLeftTile(LVCell tile) {
+        int row = tile.getRow();
+        int col = tile.getCol();
+        if (isInBounds(row, col - 1)) {
+            return getCell(row, col - 1);
+        }
+        return null;
+    }
+    public LVCell getRightTile(LVCell tile) {
+        int row = tile.getRow();
+        int col = tile.getCol();
+        if (isInBounds(row, col + 1)) {
+            return getCell(row, col + 1);
+        }
+        return null;
+    }
+
+    // within the 8x8 bound of the map, whereas the check for NonAccessible should
+    // be done explicitly in an upper level method
+    private boolean isInBounds(int row, int col) {
+        if ((row >= 0 && row < this.board.length ) &&
+                (col >= 0 && col < this.board[0].length )) {
+            return true;
+        }
+        return false;
+    }
 }

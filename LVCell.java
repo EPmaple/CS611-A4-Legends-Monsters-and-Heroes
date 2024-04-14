@@ -5,7 +5,7 @@ public abstract class LVCell implements LVBoostStrategy {
 	private int row;
 	private int col;
 	private char tileType;
-	private char[] positions;
+	private String[] positions;
     private ArrayList<String> display;
 	
 	public LVCell(int row, int col, char tileType) {
@@ -13,13 +13,18 @@ public abstract class LVCell implements LVBoostStrategy {
 		this.setCol(col);
 		this.setTileType(tileType);
 		this.display = new ArrayList<>();
-		this.positions = new char[2]; // Initialize positions array
-		positions[0] = ' '; // Default or initial values
-        positions[1] = ' ';
+		this.positions = new String[2]; // Initialize positions array
+		positions[0] = Constants.DEFAULT_LVCELL_HEROPOSITION; // Default or initial values
+        positions[1] = Constants.DEFAULT_LVCELL_MONSTERPOSITION; // handle the case of M**
+		/*
+		k---------k
+		| H1  M12 |
 
-		this.display.add(tileType + "------"+ tileType);
+		if position[1].length greater than
+		 */
+		this.display.add(tileType + "---------"+ tileType);
         this.display.add("| "+ this.positions[0] +"  "+ this.positions[1] +" |");
-        this.display.add(tileType + "------"+ tileType);
+        this.display.add(tileType + "---------"+ tileType);
 	}
 
 	@Override
@@ -27,12 +32,16 @@ public abstract class LVCell implements LVBoostStrategy {
         resetBoost(hero);
     }
 
-    public void setPositions(char[] positions) {
+    public void setPositions(String[] positions) {
+		// pad it with an extra space to make things line up
+		if (positions[1].length() < 3) {
+			positions[1] = positions[1] + " ";
+		}
         this.positions = positions;
         display.set(1,("| "+ this.positions[0] +"  "+ this.positions[1] + " |") );
     }
 
-    public char[] getPositions(){
+    public String[] getPositions(){
         return positions;
     }
 

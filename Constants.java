@@ -34,4 +34,10 @@ public class Constants {
   public static final String GOLD_SPENT = "goldSpent";
   public static final double DEFAULT_SKILL_SCALE_FACTOR = 1.05;
   public static final double SPECIAL_SKILL_SCALE_FACTOR = 1.10;
+  public static final int LV_BOTTOMMOST_ROW = 7;
+  public static final int LV_TOPMOST_ROW = 0;
+
+  public static final String DEFAULT_LVCELL_HEROPOSITION = "  ";
+  public static final String DEFAULT_LVCELL_MONSTERPOSITION = "   ";
+  public static final String LVNonAccessibleCellType = "&";
 }

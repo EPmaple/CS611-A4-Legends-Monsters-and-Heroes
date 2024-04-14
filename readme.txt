@@ -67,24 +67,32 @@ to World
 ## Diary
 ---------------------------------------------------------------------------
 
-3-19 to 3-23: Spent time thinking about the project, writing down ideas about
-the project, and some ways of implementations of things required for the
-project. Also took time to review all design pattern slides from lecture and
-took the time to read all of chapter 1 and chapter 5 of the Design Pattern 
-"gang of 4" book.
-3-23: Started writing code
-3-23 to 3-24: Spent a lot of time writing various factories, it was a rather
-tedious task, but surprisingly, it does allow for easier life afterwards!
-3-24 to 2-26: Spent more time working on vairous factories, and also took time
-to write down some notes as to the structural relationship of the project at the 
-end
-3-26 to 3-29: Start writing Battle, which I have not idea why took me so much time.
-3-29 to 3-30: Finished writing Battle and now it is down hill from here. Finished market, 
-then World, wrote the MHTile- and Map-Facotry, and then pieced everything together.
-But due to the fact that a considerate amount of time was took to think about the
-relationship of objects, the process of putting things together was surprisingly easy.
-Then took sometime debug and wrote a bit of tutorial information.
-3-30: Take the time to finish the readme.txt, UML, and the related writing deliverables.
+1.) the tuesday one week before the due date, we got together before the
+class and settled down on whose work we go going to base our code off of,
+which is Tony's, and we took some time to understand the assignment together.
+Then we split up the work.
+2.) After the Tuesday up until Saturday, Ankur took his time to do his part,
+which is LVBoostStrategy, LVTile's/Cell's, and LVMap (uses of magic numbers,
+missing safety checks, used completely different structure, lack comments)
+3.)
+
+
+
+Characters do not store their current tiles in them, whereas LVWorld would
+have HashMap<LVCell, Character> for both heroes and monsters
+
+Then when we query for user action based on whether the player is on a
+market tile, we will get the LVCell from the HashMap and check if it is
+HeroNexus, and we will do LVCell.interact() to enter the market
+NEED to update HeroNexus such that calling HeroNexus.interact() invokes
+market=
+
+displayInfoInWorld, would query from the user, to print info for heroes or
+monsters, and then iterate through heroes/monsters to print their info
+
+
+
+
 
 ## Notes
 ---------------------------------------------------------------------------
