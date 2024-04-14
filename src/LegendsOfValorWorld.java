@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class LegendsOfValorWorld implements World{
     private List<Hero> heroes;
@@ -252,8 +249,29 @@ public class LegendsOfValorWorld implements World{
                             "on this hero's nexus.");
                 }
 
-
-            } else {
+            }
+            else if(action.equalsIgnoreCase("F")){ //hero has chosen to attack
+                if (getAttackable(hero).isEmpty()){ //check if monsters are in range
+                    io.displayMsg("This hero has no monsters in range to attack!");
+                }
+                else{
+                    List<Character> attackable = getAttackable(hero);
+                    List<String> monsterIndxs = new ArrayList<>();
+                    io.displayMsg("Here are the Monsters that this hero can attack:");
+                    for (Character c : attackable){ //display indexes of attackable monsters
+                        String indx = characterToIndex.get(c);
+                        monsterIndxs.add(indx);
+                        System.out.println("[*] - " + indx);
+                    }
+                    String pInput = io.queryString("Enter the index of the monster you wish to attack", monsterIndxs);
+                    if (pInput != null) {
+                        Monster target = (Monster) indexToCharacter.get(pInput);
+                        hero.attack(target, BattleMechanics.getInstance(), BattleIO.getInstance()); // execute attack
+                        turnConsumed = true;
+                    }
+                }
+            }
+            else {
                 throw new IllegalArgumentException("The action string: " + action +
                         " has not been fully implemented for the correct functionality. " +
                         "Please add another else if statement in World.start() to take "+
@@ -285,7 +303,6 @@ public class LegendsOfValorWorld implements World{
             // if the hero wants to use spell, is there any monster within range
             // if yes there are monsters within range, query for which monster
             // to attack
-            ...
 
         } else if (selectedItem instanceof Potion) {
             hero.usePotion((Potion) selectedItem, io);
@@ -396,6 +413,64 @@ public class LegendsOfValorWorld implements World{
             }
         }
     } // end of method()
+
+
+    //given a character, return the characters they can attack
+    //returns only characters of the opposite type of the attacker (no friendly fire allowed)
+    public List<Character> getAttackable(Character attacker) {
+        LVCell[] inRange = worldMap.getAttackTiles(attacker.getRow(), attacker.getCol());
+        List<Character> attackable = new ArrayList<>();
+        Map<Character, LVCell> enemyPositions = new HashMap<>();
+
+        // Check the type of the character and assign the correct map
+        if (attacker instanceof Hero) {
+            // Use monsterPositions if the character is a Hero
+            enemyPositions.putAll(monsterPositions);
+        } else {
+            // Use heroPositions if the character is a Monster
+            enemyPositions.putAll(heroPositions);
+        }
+
+        // Iterate over enemy positions to find characters that are within attack range
+        for (Map.Entry<Character, LVCell> entry : enemyPositions.entrySet()) {
+            Character enemy = entry.getKey();
+            LVCell position = entry.getValue();
+
+            // Check if the enemy's position is within the attack range cells
+            for (LVCell cell : inRange) {
+                if (cell.equals(position)) {
+                    attackable.add(enemy);
+                    break; // Stop checking once the enemy is found to be attackable
+                }
+            }
+        }
+
+        return attackable;
+    }
+
+    public void handleMonsterAction(Monster m){
+        LVCell curPos = monsterPositions.get(m);
+        List<Character> targets = getAttackable(m);
+        if (!targets.isEmpty()){ //if the monster has a hero in range, prioritize attacking them
+            int minHealth = targets.get(0).getHP();
+            Hero minHealthHero = (Hero) targets.get(0);
+            for(Character c: targets){ //find the target with the lowest HP
+                if (c.getHP() < minHealth){
+                    minHealth = c.getHP();
+                    minHealthHero = (Hero) c;
+                }
+            }
+            m.attack(minHealthHero, BattleMechanics.getInstance(), BattleIO.getInstance());
+        }
+        else{ //no heroes in range to attack, move close to nexus by dropping down one row
+            LVCell nextTile = worldMap.getDownTile(curPos);
+            if (nextTile.getPositions()[1].trim().isEmpty()){ //monster slot is available at the next tile, move there
+                move(nextTile, m);
+            }
+            //otherwise skip monster turn, as monster cant attack and cant move, and no diagonal movement allowed
+        }
+    }
+
 
     // *****************************************************************
 

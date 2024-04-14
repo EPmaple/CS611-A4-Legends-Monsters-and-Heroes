@@ -46,7 +46,7 @@ public class LVGame {
                 When creating a new world
                  */
                 // query for which lane to put this new hero in
-                heroes.get(i)
+                heroes.get(i);
 
             }
         }

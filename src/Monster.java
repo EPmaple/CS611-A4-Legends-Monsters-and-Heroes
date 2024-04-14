@@ -98,7 +98,9 @@ public class Monster extends Character{
   }
   public int getDodgeChance() {
     return this.dodgeChance;
-  } 
+  }
+
+
 
   @Override
   public String toString() {

@@ -147,4 +147,43 @@ public class LVMap extends Board{
         }
         return false;
     }
+
+    //this method returns tiles that are within the attack range of heroes
+    //including impassable tiles and tiles without mosnters
+    public LVCell[] getAttackTiles(int row, int col){
+        //the tiles will be ordered in a clockwise fashion, tile at the 0th index will be the tile above the heroes pos
+        LVCell[] tilesInRange = new LVCell[8];
+        LVCell curCell = getCell(row, col);
+        //filling out adjacent tiles
+        tilesInRange[0] =  getUpTile(curCell); //top
+        tilesInRange[2] =  getRightTile(curCell); //right
+        tilesInRange[4] = getDownTile(curCell); //bottom
+        tilesInRange[6] = getLeftTile(curCell); //left
+
+        //filling out diagonal tiles
+        tilesInRange[1] = getUpTile(tilesInRange[2]);  //top right diagonal
+        tilesInRange[3] = getDownTile(tilesInRange[2]); //bottom right diagonal
+        tilesInRange[7] = getUpTile(tilesInRange[6]);  //top left diagonal
+        tilesInRange[5] = getDownTile(tilesInRange[6]); //bottom left diagonal
+
+        return tilesInRange;
+    }
+
+    public LVCell[] getAttackTiles(LVCell curCell){
+        //the tiles will be ordered in a clockwise fashion, tile at the 0th index will be the tile above the heroes pos
+        LVCell[] tilesInRange = new LVCell[8];
+        //filling out adjacent tiles
+        tilesInRange[0] =  getUpTile(curCell); //top
+        tilesInRange[2] =  getRightTile(curCell); //right
+        tilesInRange[4] = getDownTile(curCell); //bottom
+        tilesInRange[6] = getLeftTile(curCell); //left
+
+        //filling out diagonal tiles
+        tilesInRange[1] = getUpTile(tilesInRange[2]);  //top right diagonal
+        tilesInRange[3] = getDownTile(tilesInRange[2]); //bottom right diagonal
+        tilesInRange[7] = getUpTile(tilesInRange[6]);  //top left diagonal
+        tilesInRange[5] = getDownTile(tilesInRange[6]); //bottom left diagonal
+
+        return tilesInRange;
+    }
 }
