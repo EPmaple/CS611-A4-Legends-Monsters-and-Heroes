@@ -112,18 +112,93 @@ public class LegendsOfValorIO extends IO{
         return laneSelection;
     }
 
-    public Integer queryLaneForTeleportation(Hero hero, List<Integer> ints) {
+    public Integer queryLaneForTeleportation(Hero hero, List<Integer> ints,
+                                             HashMap<Character, String> characterToIndex) {
         // queryString may return null, handle this case
-        String msg = "Would you like to place " + hero.getName() + " on ";
+        String msg =
+                "Enter the lane you want " + characterToIndex.get(hero) + " "
+                        + hero.getName() + " to teleport to: ";
         for (Integer laneNum : ints) {
-            msg += ", lane " + laneNum + " ";
+            msg += laneNum + ", ";
         }
 
-        Integer laneSelection = null;
-        while (laneSelection == null) {
-            laneSelection = queryInt(msg, ints);
-        }
+        Integer laneSelection = queryIntWithPrior(msg, ints);
 
         return laneSelection;
+    }
+
+    public Hero queryHeroForTeleportation(List<Hero> heroes, int laneSelection,
+                    HashMap<Character, String> characterToIndex,
+                    HashMap<String, Character> indexToCharacter) {
+        List<Hero> targetHeroes = new ArrayList<Hero>();
+        for (Hero hero : heroes) {
+            int heroCol = hero.getCol();
+            System.out.println(heroCol);
+            if (3 * (laneSelection - 1) + 1 == heroCol ||
+                    3 * (laneSelection - 1) == heroCol) {
+                targetHeroes.add(hero);
+            }
+        }
+        // paladin
+
+        if (targetHeroes.size() == 0) {
+            throw new IllegalArgumentException("Method getLanesForTeleportation" +
+                    " have correctly detected that there is a hero in lane " +
+                    laneSelection + ", so the code here must be incorrect.");
+        }
+
+        String msg = "Which hero in lane " + laneSelection + " would you like to "+
+                "teleport to: ";
+        List<String> targetHeroIndexes = new ArrayList<String>();
+        for (Hero hero : targetHeroes) {
+            msg += characterToIndex.get(hero) + ", ";
+            targetHeroIndexes.add(characterToIndex.get(hero));
+        }
+
+        String targetHeroIndexSelection = queryString(msg, targetHeroIndexes);
+
+        if (targetHeroIndexSelection == null) {
+            return null;
+        } else {
+            return (Hero)indexToCharacter.get(targetHeroIndexSelection);
+        }
+    }
+
+    public LVCell queryForTpDirInRelationToTargetHero(LVMap worldMap,
+                                                   LVCell targetHeroTile) {
+        // can only teleport to right, left, down of the current tile
+
+        HashMap<String, LVCell> directionToTiles = new HashMap<String, LVCell>();
+        directionToTiles.put("right", worldMap.getRightTile(targetHeroTile));
+        directionToTiles.put("left", worldMap.getLeftTile(targetHeroTile));
+        directionToTiles.put("down", worldMap.getDownTile(targetHeroTile));
+
+        List<String> directionsStr = new ArrayList<String>();
+
+        for (Map.Entry<String, LVCell> entry : directionToTiles.entrySet()) {
+            LVCell tile = entry.getValue();
+            if (tile != null) {
+                // tile is not NonAccessible and tile is not does not have a hero on it
+                if (tile.getTileType() != '&' &&
+                        tile.getPositions()[0].trim().isEmpty()) {
+                    directionsStr.add(entry.getKey());
+                }
+            }
+        }
+
+        // directionsStr now have only valid tiles for teleportation
+        String msg = "Enter the direction in relation to the targetHero you want " +
+                "to teleport to: ";
+        for (String direction : directionsStr) {
+            msg += direction + ", ";
+        }
+
+        String selectedDirection = queryString(msg, directionsStr);
+
+        if (selectedDirection == null) {
+            return null;
+        } else {
+            return directionToTiles.get(selectedDirection);
+        }
     }
 }

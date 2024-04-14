@@ -12,7 +12,7 @@ Student ID: U30361395
 Armor.java: Class containing behavior and states of Armor objects
 Attribute.java: Enum used to represent attributes of Character
 Battle.java: Class used to instantiate Battle instance, which is responsible
-for the battle interface in our game
+for the battle interface in our gameManager
 BattleIO.java: a subclass of IO filled with specific queries and displays related
 to Battle
 BattleMechanics.java: a class responsible for all the mechanics in Battle
@@ -23,9 +23,9 @@ CharacterFactory.java: Factory responsible for loading all character .txt files
 Colors.java: Colors class provides ANSI escape codes for text colors and methods to retrieve color codes.
 CommonTileBehavior.java: Part of the TileBehavior Strategy Pattern that
 represents the behavior of a CommoneTile
-Constants.java: This class provides all global constants for any game.
+Constants.java: This class provides all global constants for any gameManager.
 Coordinate.java: This class is used to implement Coordinate for each MHTile
-Game.java: The hub for users to indicate which game to play.
+src.GameManager.java: The hub for users to indicate which gameManager to play.
 Hero.java: Class containing behavior and states of Hero objects
 HeroType.java: Enum used to represent the different possible types of heroes
 InaccessibleTileBehavior.java: Part of the TileBehavior Strategy Pattern that
@@ -36,16 +36,16 @@ Item.java: Abstract class that Armor, Weapon, Potion, and Spell extends from,
 holds the general behavior and data members necessary for an Item
 ItemFactory.java: Facotry responsible for loading all item .txt files, and is
 reponsible for housing all the create methods for the various items
-Main.java: This class is used to initalize the Game.
+Main.java: This class is used to initalize the src.GameManager.
 MapFactory.java: Factory used to create a map (MHTile[][])
 Market.java: Class housing all the behaviors and states of the Market interface
-of our of game
+of our of gameManager
 MarketIO.java: a subclass of IO filled with specific queries and displays related
 to Market
 MarketTileBehavior.java: Part of the TileBehavior Strategy Pattern that
 represents the behavior of a MarketTile
-MHGame.java: Class that is the game starter for the game Legends: Monsters and
-Heroes, by first querying from the user necessary game metrics
+MHGame.java: Class that is the gameManager starter for the gameManager Legends: Monsters and
+Heroes, by first querying from the user necessary gameManager metrics
 Monster.java: Class containing behavior and states of Monster objects
 MonsterType.java: Enum used to represent the different possible types of monsters
 Potion.java: Class containing behavior and states of Potion objects
@@ -53,14 +53,14 @@ Spell.java: Class containing behavior and states of Spell objects
 SpellType.java: Enum used to represent the different possible types of spells
 State.java: Enum used to represent the different possible types of states of a
 character, allows for scalability in the future if more states are to be added
-Summary.java: Class to give a summary of the user from playing the game
+Summary.java: Class to give a summary of the user from playing the gameManager
 MHTile.java: Class that houses all the behaviors and states of MHTile objects, part
 of the Strategy Pattern of TileBehavior
 TileBehavior.java: A Java interface that implements the Strategy Pattern
 TileFactory.java: Factory responsible for creating Tiles of different TileBehavior
 Weapon.java: Class containing behavior and states of Weapon objects
 World.java: Class housing all the behaviors and states of the World interface
-of our of game; it is where the majority of the game is built around
+of our of gameManager; it is where the majority of the gameManager is built around
 WorldIO.java: a subclass of IO filled with specific queries and displays related
 to World
 
@@ -141,7 +141,7 @@ https://www.geeksforgeeks.org/overriding-equals-method-in-java/
 ## Input/Output Example
 ---------------------------------------------------------------------------
 output:
-[>] Welcome! Please enter the number for the game you want ot play: 
+[>] Welcome! Please enter the number for the gameManager you want ot play:
 [0] Legends: Monsters and Heroes
 input:
 0
@@ -304,7 +304,7 @@ input:
 [>] Blinky attacked Parzival for 100.
 [>] Parzival has 0 HP left. Parzival has fainted.
 
-[>] You were defeated in battle and game is over.
+[>] You were defeated in battle and gameManager is over.
 
 [>] Total gold gain: 0
 [>] Total gold spent: 0
@@ -600,7 +600,7 @@ output:
 [>] BunsenBurner attacked Gaerdal_Ironhand for 150.
 [>] Gaerdal_Ironhand has 0 HP left. Gaerdal_Ironhand has fainted.
 
-[>] You were defeated in battle and game is over.
+[>] You were defeated in battle and gameManager is over.
 
 [>] Total gold gain: 6700
 [>] Total gold spent: 1700

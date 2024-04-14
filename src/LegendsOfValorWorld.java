@@ -1,3 +1,5 @@
+import src.LVSummary;
+
 import java.util.*;
 
 public class LegendsOfValorWorld implements World{
@@ -8,14 +10,16 @@ public class LegendsOfValorWorld implements World{
     private LVCell currentTile;
     private LVMap worldMap;
     private CharacterFactory cfInstance;
+    private LVSummary summaryInstance;
 
-    public LegendsOfValorWorld(List<Hero> heroes) {
+    public LegendsOfValorWorld(List<Hero> heroes, LVMap worldMap) {
         this.io = LegendsOfValorIO.getInstance();
-        // setworldmap
+        this.worldMap = worldMap;
         this.heroes = heroes;
+        this.monsters = new ArrayList<Monster>();
         cfInstance = CharacterFactory.getInstance();
-        // setheroes
-        // set starting nexus
+        summaryInstance = LVSummary.getInstance();
+        init();
     }
 
     HashMap<String, Character> indexToCharacter = new HashMap<String, Character>();
@@ -36,7 +40,7 @@ public class LegendsOfValorWorld implements World{
             lanesAvailable.remove(i); // so no lane can be chosen twice
             // assume i is returned, representing the lane number
             // 1,4,7  3*(i-1)+1
-            int heroNexusCol = 3*(i-1)+1;
+            int heroNexusCol = 3*(i-1);
             LVCell heroNexus = worldMap.getCell(Constants.LV_BOTTOMMOST_ROW, heroNexusCol);
             // current position of the hero, for adjacency?
             heroPositions.put(hero, heroNexus);
@@ -54,7 +58,7 @@ public class LegendsOfValorWorld implements World{
 
             // also take advantage of the for loop to cache the monster's nexus
             // 2,5,8
-            int monsterNexusCol = 3*(i-1)+2;
+            int monsterNexusCol = 3*(i-1)+1;
             LVCell monsterNexus = worldMap.getCell(Constants.LV_TOPMOST_ROW,
                     monsterNexusCol);
             monsterNexuses.add(monsterNexus);
@@ -91,6 +95,8 @@ public class LegendsOfValorWorld implements World{
                 String[] monsterNexusPositions = {Constants.DEFAULT_LVCELL_HEROPOSITION,
                         "M" + monsterIndex++}; // also increment monsterIndex
                 monsterNexus.setPositions(monsterNexusPositions);
+                // add it to List<Monster>
+                monsters.add(monster);
             }
         }
 
@@ -105,6 +111,11 @@ public class LegendsOfValorWorld implements World{
     public void start() {
         // initial hero placement and initial monster spawn
         while(true) { // outer main game loop
+
+            if (round % 8 == 0) {
+                generateMonsters();
+            }
+
             round += 1;
             System.out.println("round: " + round);
             // To spawn monsters every 8 rounds, another class, a monsterSpawner?
@@ -114,21 +125,36 @@ public class LegendsOfValorWorld implements World{
                 currentTile = heroPositions.get(hero);
                 // query for hero
                 heroMove(hero);
+
+                // check after a heroMove, whether the goal of going to enemy nexus
+                // has been met
+                if (heroPositions.get(hero).getTileType() == 'M') {
+                    // game has ended, print summary
+                    summaryInstance.printVictorySummary(round);
+                }
             }
 
             for (Monster monster : monsters) {
                 currentTile = monsterPositions.get(monster);
                 // monster move and attack logic
+
+                // check after a monsterMove, whether the goal of going to enemy nexus
+                // has been met
+                if (monsterPositions.get(monster).getTileType() == 'H') {
+                    // game has ended, print summary
+                    summaryInstance.printLossSummary(round);
+                }
             }
         }
     }
 
     private void heroMove(Hero hero) {
         boolean turnConsumed = false;
-        while (turnConsumed) {
+        while (!turnConsumed) {
             // display the map with the current hero highlighted
             System.out.println(worldMap.toString());
-            io.displayMsg("It is currently " + hero.getName() + "'s turn.");
+            io.displayMsg("It is currently " + characterToIndex.get(hero) + " "
+                    + hero.getName() + "'s turn.");
             String action = io.queryForUserAction(currentTile.getTileType());
             // query for user action, if
             // hero is on
@@ -214,6 +240,10 @@ public class LegendsOfValorWorld implements World{
                 io.displayTutorial(); // need to change tutorial
 
             } else if (action.equalsIgnoreCase("P")) {
+                // THINK ABOUT using a designer pattern for this???
+                /*
+                can only teleport to a different lane that contains a hero
+                 */
                 // logic for teleporting hero to the other two lanes
                 /*
                 Current idea: (with option prior)
@@ -223,12 +253,40 @@ public class LegendsOfValorWorld implements World{
                 4.) after getting the targetHero, if no possible move, then repeat step
                     3 for a valid choice; else, show possible tiles to move on to
                 5.) then hero.setCurrentTile(targetTeleportTile)
+
+                0 1 |2| 3 4 |5| 6 7
+                lane 1: 0 1
+                lane 2: 3 4
+                lane 3: 6 7
                  */
                 LVCell currentHeroTile = heroPositions.get(hero);
                 List<Integer> lanesAvailable =
-                        worldMap.getLanesForTeleportation(currentHeroTile);
+                        worldMap.getLanesForTeleportation(currentHeroTile, heroes);
 
+                // go on to more logics of teleportation only if there is another lane
+                // with a hero in it
+                if (!(lanesAvailable.size() == 0)) {
+                    Integer laneSelection = io.queryLaneForTeleportation(hero,
+                            lanesAvailable, characterToIndex);
+                    if (laneSelection != null) {
+                        // query for the targetHero from the lane
+                        Hero selectedHero = io.queryHeroForTeleportation(heroes,
+                                laneSelection, characterToIndex, indexToCharacter);
 
+                        // after getting the targetHero, we then ask if the user wants to
+                        // teleport to up down left right of the target hero, and keep
+                        // on prompting until we get prior/null or we get a valid selection
+                        if (selectedHero != null) {
+                            LVCell selectedTile =
+                                    io.queryForTpDirInRelationToTargetHero(worldMap,
+                                    heroPositions.get(selectedHero));
+                            if (selectedTile != null) {
+                                move(selectedTile, selectedHero);
+                                turnConsumed = true;
+                            }
+                        }
+                    }
+                }
 
             } else if (action.equalsIgnoreCase("R")) {
                 // logic for teleporting hero back to nexus
@@ -303,6 +361,10 @@ public class LegendsOfValorWorld implements World{
             // if the hero wants to use spell, is there any monster within range
             // if yes there are monsters within range, query for which monster
             // to attack
+<<<<<<< Updated upstream:src/LegendsOfValorWorld.java
+=======
+
+>>>>>>> Stashed changes:LegendsOfValorWorld.java
 
         } else if (selectedItem instanceof Potion) {
             hero.usePotion((Potion) selectedItem, io);
@@ -339,7 +401,7 @@ public class LegendsOfValorWorld implements World{
         move with the above three conditions
          */
         if (nextTile == null) { // Meaning it is out of bounds
-            System.out.println("nextTile is null");
+//            System.out.println("nextTile is null");
             io.displayMovementMsg(false, null);
             return false;
 
@@ -379,6 +441,10 @@ public class LegendsOfValorWorld implements World{
                         positions[0] = Constants.DEFAULT_LVCELL_HEROPOSITION;
                         currentTile.setPositions(positions);
 
+                        // as currentTile is acquired from heroPositions,
+                        // we will have to update this HashMap as well
+                        heroPositions.put((Hero)character, nextTile);
+
                         io.displayMovementMsg(true, nextTile);
                         return true;
 
@@ -401,6 +467,10 @@ public class LegendsOfValorWorld implements World{
                     positions = currentTile.getPositions();
                     positions[1] = Constants.DEFAULT_LVCELL_MONSTERPOSITION;
                     currentTile.setPositions(positions);
+
+                    // as currentTile is acquired from monsterPositions,
+                    // we will have to update this HashMap as well
+                    monsterPositions.put((Monster)character, nextTile);
 
                     io.displayMovementMsg(true, nextTile);
                     return true;

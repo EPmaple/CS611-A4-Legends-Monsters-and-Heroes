@@ -9,14 +9,11 @@
 
 import java.util.*;
 
-public class MHGame {
-  private IO io;
-  private CharacterFactory cfInstance;
+public class MHGame extends Game{
   private MapFactory mfInstance;
 
   public MHGame(IO io) {
-    this.io = io;
-    cfInstance = CharacterFactory.getInstance();
+    super(io);
     mfInstance = MapFactory.getInstance();
   }
 

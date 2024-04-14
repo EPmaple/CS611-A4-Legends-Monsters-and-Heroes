@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Random;
 
 public class LVMapFactory implements BoardFactory {
-    private ItemFactory ifInstance;
+    private ItemFactory ifInstance = ItemFactory.getInstance();
     @Override
     public Board createBoard(int rowNum, int colNum) {
         Random random = new Random();

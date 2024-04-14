@@ -9,13 +9,13 @@
 
 public class Summary {
   private static Summary instance;
-  private IO io;
+  protected IO io;
 
-  private int totalGoldGain = 0;
-  private int totalGoldSpent = 0;
-  private int highestHeroLvl = 1;
+  protected int totalGoldGain = 0;
+  protected int totalGoldSpent = 0;
+  protected int highestHeroLvl = 1;
 
-  private Summary(IO io) {
+  protected Summary(IO io) {
     this.io = io;
   }
 
