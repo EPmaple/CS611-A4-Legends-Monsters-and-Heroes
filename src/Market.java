@@ -22,9 +22,14 @@ public class Market {
    */
   protected List<Item> stock;
 
-  public Market (List<Hero> heroes, List<Item> stock) {
+  public Market (List<Hero> heroes, List<Item> stock, Summary summary) {
     this.io = MarketIO.getInstance();
-    this.summaryInstance = Summary.getInstance();
+    if (summary != null) {
+      this.summaryInstance = summary;
+    } else {
+      this.summaryInstance = Summary.getInstance();
+    }
+
     setHeroes(heroes);
     setStock(stock);
   }

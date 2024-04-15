@@ -41,15 +41,7 @@ public class LVGame extends Game{
                         io.displayMsg(msg);
                     } // null => go on to the next iteration of the while loop
                 }
-<<<<<<< Updated upstream:src/LVGame.java
-                /*
-                When creating a new world
-                 */
-                // query for which lane to put this new hero in
-                heroes.get(i);
 
-=======
->>>>>>> Stashed changes:LVGame.java
             }
 
             LVMap worldMap = (LVMap) mfInstance.createBoard(8, 8);

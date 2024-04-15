@@ -17,19 +17,29 @@ public class LegendsOfValorIO extends IO{
     // ***************************************************
     // display
 
+    public void displayCharacterReviveMsg(Hero hero, String encode) {
+        String msg = encode + " " + hero.getName() + " was defeated" +
+        " and has now been revived back at his/her nexus.";
+        displayMsg(msg);
+    }
+
     public void displayTutorial() {
         String msg = "Basic Actions:\n" +
-                "MOVEMENT: The W/A/S/D keys allow you to move, press them to go up/left/down/right respectively.\n" +
-                "INVENTORY: Press U to access your heroes inventories, you will need to specify which hero's inventory to access after pressing U.\n" +
-                "INFORMATION: Press I to display Hero or Monster inventory, you will need to specify if you want to see Hero or Monster info after pressing I.\n"+
-                "MARKETS: When on a nexus tile, press M to access its market, this option cannot be executed unless a Hero is standing on one of the nexus tiles\n" +
-                "TUTORIAL: Obviously, T displays the tutorial\n" +
-                "TELEPORTATION TO NEXUS: Press R to teleport a hero back to their nexus, you will need to specify which hero to teleport after pressing R\n" +
-                "ATTACKING: Press F to attack with a hero, you will need to specify which hero to attack with after pressing F\n";
+                Colors.ANSI_YELLOW + "MOVEMENT:" + Colors.ANSI_RESET + "The W/A/S/D keys allow you to move, press them to go up/left/down/right respectively.\n" +
+                Colors.ANSI_YELLOW + "INVENTORY:" + Colors.ANSI_RESET + "Press U to access your heroes inventories, you will need to specify which hero's inventory to access after pressing U.\n" +
+                Colors.ANSI_YELLOW + "INFORMATION:" + Colors.ANSI_RESET +"Press I to display Hero or Monster inventory, you will need to specify if you want to see Hero or Monster info after pressing I.\n"+
+                Colors.ANSI_YELLOW + "MARKETS:" + Colors.ANSI_RESET + "When on a nexus tile, press M to access its market, this option cannot be executed unless a Hero is standing on one of the nexus tiles\n" +
+                Colors.ANSI_YELLOW + "TUTORIAL:" + Colors.ANSI_RESET + "Obviously, T displays the tutorial\n" +
+                Colors.ANSI_YELLOW + "TELEPORTATION TO ANOTHER LANE:" + Colors.ANSI_RESET +  "allows you to teleport to a another lane" +
+                " that has a hero, specifically to the right/left/down of this" +
+                " hero\n" +
+                Colors.ANSI_YELLOW + "RECALL TO NEXUS:" + Colors.ANSI_RESET +  "Press R to teleport a hero back to their nexus, you will need to specify which hero to teleport after pressing R\n" +
+                Colors.ANSI_YELLOW + "ATTACKING:" + Colors.ANSI_RESET +  "Press F to attack with a hero, you will need to specify which hero to attack with after pressing F\n";
         displayMsg(msg);
     }
 
     public void displayMovementMsg(boolean isMovementSuccessful, LVCell tile) {
+
         if ((isMovementSuccessful && tile == null) ||
                 !isMovementSuccessful && tile != null) {
             throw new IllegalArgumentException("The valid pairings are: "+
@@ -89,9 +99,10 @@ public class LegendsOfValorIO extends IO{
         String msg = "Enter W/w to move up, A/a to move left, S/s to move down, " +
                 "D/d to move right, U/u to use the inventory of a hero," +
                 " I/i to show information about the heroes, T/t for tutorial, "  +
-                " P/p to teleport to another lane, R/r to recall back to nexus";
+                " P/p to teleport to another lane, R/r to recall back to nexus" +
+                ", F/f to attack a monster";
         List<String> commands = new ArrayList<String>();
-        commands.addAll(Arrays.asList("W", "A", "S", "D", "U", "I", "T", "P", "R"));
+        commands.addAll(Arrays.asList("W", "A", "S", "D", "U", "I", "T", "P", "R", "F"));
 
         if (tileType == 'H') {
             msg += ", M/m to enter market";
@@ -161,13 +172,15 @@ public class LegendsOfValorIO extends IO{
             msg += characterToIndex.get(hero) + ", ";
             targetHeroIndexes.add(characterToIndex.get(hero));
         }
+        // System.out.println("targetHeroIndexes from queryHeroForTeleportation: " + targetHeroIndexes.toString());
 
         String targetHeroIndexSelection = queryString(msg, targetHeroIndexes);
+        // System.out.println("targetHeroIndexSelection from queryHeroForTeleportation: " + targetHeroIndexSelection);
 
         if (targetHeroIndexSelection == null) {
             return null;
         } else {
-            return (Hero)indexToCharacter.get(targetHeroIndexSelection);
+            return (Hero)indexToCharacter.get(targetHeroIndexSelection.toUpperCase());
         }
     }
 

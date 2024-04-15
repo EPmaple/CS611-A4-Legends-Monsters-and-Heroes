@@ -6,7 +6,6 @@
  * This class is used to initalize the Game.
  */
 
-import src.GameManager;
 
 public class Main {
   public static void main(String[] args) {

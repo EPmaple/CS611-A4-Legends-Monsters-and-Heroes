@@ -38,7 +38,9 @@ public abstract class LVCell implements LVBoostStrategy {
 			positions[1] = positions[1] + " ";
 		}
         this.positions = positions;
-        display.set(1,("| "+ this.positions[0] +"  "+ this.positions[1] + " |") );
+        display.set(1,("| "+ Colors.ANSI_GREEN + this.positions[0] 
+				+ Colors.ANSI_RESET +"  "+ Colors.ANSI_RED + this.positions[1] 
+				+ Colors.ANSI_RESET+ " |") );
     }
 
     public String[] getPositions(){
@@ -71,5 +73,10 @@ public abstract class LVCell implements LVBoostStrategy {
 
 	public void setTileType(char type) {
 		this.tileType = type;
+	}
+
+	@Override
+	public String toString() {
+		return "(" + this.getRow() + ", " + this.getCol() + ")";
 	}
 }

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2a65463f-0235-4b57-a6ee-368bb53dcca7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CS611-A4-Legends-Monsters-and-Heroes-main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CS611-A4-Legends-Monsters-and-Heroes.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS611-A4-Legends-Monsters-and-Heroes.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/LVGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/LVGame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/LVMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/LVMap.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/LVSummary.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/LVSummary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/LegendsOfValorIO.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/LegendsOfValorIO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/LegendsOfValorWorld.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/LegendsOfValorWorld.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Monster.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Monster.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LVGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LVGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LVMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LVMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LVSummary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LVSummary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LegendsOfValorWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LegendsOfValorWorld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2eskpKDQYjLqe6Ka1LW5063oci1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/a654172382/Downloads/CS611-A4-Legends-Monsters-and-Heroes-main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.importing&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="CS611-A4-Legends-Monsters-and-Heroes-main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="CS611-A4-Legends-Monsters-and-Heroes-main" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-1.8.0_392-corretto-1.8.0_392-4caba194b151-3820a516" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2a65463f-0235-4b57-a6ee-368bb53dcca7" name="Changes" comment="" />
+      <created>1712700854462</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712700854462</updated>
+      <workItem from="1712700855564" duration="34000" />
+      <workItem from="1712700916500" duration="28512000" />
+      <workItem from="1713105660041" duration="25555000" />
+      <workItem from="1713139968820" duration="613000" />
+      <workItem from="1713140598383" duration="37000" />
+      <workItem from="1713140711778" duration="36000" />
+      <workItem from="1713140819664" duration="57000" />
+      <workItem from="1713140889792" duration="70000" />
+      <workItem from="1713141631833" duration="132000" />
+      <workItem from="1713142203848" duration="52000" />
+      <workItem from="1713142268010" duration="137000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

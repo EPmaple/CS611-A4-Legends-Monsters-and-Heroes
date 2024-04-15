@@ -204,7 +204,7 @@ public abstract class Hero extends Character{
    * If the hero has reached its expCap, then we would adjust the exp and
    * level up
    */
-  public void incExp(int expIncAmt, BattleIO io) {
+  public void incExp(int expIncAmt, IO io) {
     this.setExperience(this.experience + expIncAmt);
     // X has gained Y exp.
     io.displayExpIncMsg(this, expIncAmt);
@@ -216,7 +216,7 @@ public abstract class Hero extends Character{
   }
   // Let the new expCap be set in lvlUp, as there may be situations where
   // we simply want to level up but keep the exp the same
-  public void lvlUp(BattleIO io) {
+  public void lvlUp(IO io) {
     this.setLevel(this.level + 1); // Inc lvl
     // X has leveled up and is now lvl.Y
     io.displayLvlUpMsg(this);

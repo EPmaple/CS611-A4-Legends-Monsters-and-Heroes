@@ -1,5 +1,3 @@
-import src.LVSummary;
-
 import java.util.*;
 
 public class LegendsOfValorWorld implements World{
@@ -11,6 +9,7 @@ public class LegendsOfValorWorld implements World{
     private LVMap worldMap;
     private CharacterFactory cfInstance;
     private LVSummary summaryInstance;
+    private LegendsOfValorMechanics lvMechanics;
 
     public LegendsOfValorWorld(List<Hero> heroes, LVMap worldMap) {
         this.io = LegendsOfValorIO.getInstance();
@@ -19,6 +18,7 @@ public class LegendsOfValorWorld implements World{
         this.monsters = new ArrayList<Monster>();
         cfInstance = CharacterFactory.getInstance();
         summaryInstance = LVSummary.getInstance();
+        lvMechanics = LegendsOfValorMechanics.getInstance();
         init();
     }
 
@@ -30,7 +30,7 @@ public class LegendsOfValorWorld implements World{
         List<Integer> lanesAvailable = new ArrayList<Integer>();
         lanesAvailable.add(1);
         lanesAvailable.add(2);
-        lanesAvailable.add(3);
+        lanesAvailable.add(3); // paladin
 
         for (Hero hero : heroes) {
             // query: do you want to place hero on lane 1, 2, or 3
@@ -42,6 +42,9 @@ public class LegendsOfValorWorld implements World{
             // 1,4,7  3*(i-1)+1
             int heroNexusCol = 3*(i-1);
             LVCell heroNexus = worldMap.getCell(Constants.LV_BOTTOMMOST_ROW, heroNexusCol);
+            // also setCol and setRow of Hero
+            hero.setCol(heroNexusCol);
+            hero.setRow(Constants.LV_BOTTOMMOST_ROW);
             // current position of the hero, for adjacency?
             heroPositions.put(hero, heroNexus);
             // fixed nexus for the hero, for RECALL
@@ -55,6 +58,8 @@ public class LegendsOfValorWorld implements World{
             String[] heroNexusPositions = {"H" + i,
                     Constants.DEFAULT_LVCELL_MONSTERPOSITION};
             heroNexus.setPositions(heroNexusPositions);
+
+
 
             // also take advantage of the for loop to cache the monster's nexus
             // 2,5,8
@@ -86,6 +91,9 @@ public class LegendsOfValorWorld implements World{
             if (monsterNexus.getPositions()[1].trim().isEmpty()) {
                 // only if the spawn point is empty then we will spawn the monster
                 Monster monster = cfInstance.createMonster(highestHeroLvl);
+                // setCol and setRow of the monster
+                monster.setCol(monsterNexus.getCol());
+                monster.setRow(monsterNexus.getRow());
                 // give it an encode
                 indexToCharacter.put("M" + monsterIndex, monster);
                 characterToIndex.put(monster, "M" + monsterIndex);
@@ -99,7 +107,6 @@ public class LegendsOfValorWorld implements World{
                 monsters.add(monster);
             }
         }
-
     }
 
     HashMap<Hero, LVCell> heroPositions = new HashMap<Hero, LVCell>();
@@ -113,11 +120,12 @@ public class LegendsOfValorWorld implements World{
         while(true) { // outer main game loop
 
             if (round % 8 == 0) {
-                generateMonsters();
+                generateMonsters(); 
             }
-
+            
+            System.out.println("monsterPositions: " + monsterPositions);
             round += 1;
-            System.out.println("round: " + round);
+            io.displayMsg("round: " + round);
             // To spawn monsters every 8 rounds, another class, a monsterSpawner?
             for (Hero hero : heroes) {
                 // instead of storing the tile in a character
@@ -131,18 +139,21 @@ public class LegendsOfValorWorld implements World{
                 if (heroPositions.get(hero).getTileType() == 'M') {
                     // game has ended, print summary
                     summaryInstance.printVictorySummary(round);
+                    return;
                 }
             }
 
             for (Monster monster : monsters) {
                 currentTile = monsterPositions.get(monster);
                 // monster move and attack logic
+                handleMonsterAction(monster);
 
                 // check after a monsterMove, whether the goal of going to enemy nexus
                 // has been met
                 if (monsterPositions.get(monster).getTileType() == 'H') {
                     // game has ended, print summary
                     summaryInstance.printLossSummary(round);
+                    return; // paladin
                 }
             }
         }
@@ -165,25 +176,25 @@ public class LegendsOfValorWorld implements World{
                 // try to move to that tile, and the corresponding movementMsg
                 LVCell nextTile = worldMap.getUpTile(currentTile);
 
-                if (move(nextTile, hero)) {
+                if (move(nextTile, hero, true)) {
                     turnConsumed = true;
                 }
 
             } else if (action.equalsIgnoreCase("A")) {
                 LVCell nextTile = worldMap.getLeftTile(currentTile);
-                if (move(nextTile, hero)) {
+                if (move(nextTile, hero, true)) {
                     turnConsumed = true;
                 }
 
             } else if (action.equalsIgnoreCase("S")) {
                 LVCell nextTile = worldMap.getDownTile(currentTile);
-                if (move(nextTile, hero)) {
+                if (move(nextTile, hero, true)) {
                     turnConsumed = true;
                 }
 
             } else if (action.equalsIgnoreCase("D")) {
                 LVCell nextTile = worldMap.getRightTile(currentTile);
-                if (move(nextTile, hero)) {
+                if (move(nextTile, hero, true)) {
                     turnConsumed = true;
                 }
 
@@ -261,7 +272,7 @@ public class LegendsOfValorWorld implements World{
                  */
                 LVCell currentHeroTile = heroPositions.get(hero);
                 List<Integer> lanesAvailable =
-                        worldMap.getLanesForTeleportation(currentHeroTile, heroes);
+                        worldMap.getLanesForTeleportation(currentHeroTile, heroes, hero);
 
                 // go on to more logics of teleportation only if there is another lane
                 // with a hero in it
@@ -281,12 +292,13 @@ public class LegendsOfValorWorld implements World{
                                     io.queryForTpDirInRelationToTargetHero(worldMap,
                                     heroPositions.get(selectedHero));
                             if (selectedTile != null) {
-                                move(selectedTile, selectedHero);
+                                move(selectedTile, hero, true);
                                 turnConsumed = true;
                             }
                         }
                     }
                 }
+                // paladin
 
             } else if (action.equalsIgnoreCase("R")) {
                 // logic for teleporting hero back to nexus
@@ -298,14 +310,14 @@ public class LegendsOfValorWorld implements World{
                 nexus associated with the Hero
                  */
                 LVCell nexus = heroToNexus.get(hero);
-                if (move(nexus, hero)) {
+                if (move(nexus, hero, true)) {
                     turnConsumed = true;
                 } else {
                     // This means that there is another hero that is currently on
                     // this hero's nexus, and thus we cannot recall
                     io.displayMsg("Failed to recall as there is currently another hero "+
                             "on this hero's nexus.");
-                }
+                } // paladin
 
             }
             else if(action.equalsIgnoreCase("F")){ //hero has chosen to attack
@@ -323,8 +335,15 @@ public class LegendsOfValorWorld implements World{
                     }
                     String pInput = io.queryString("Enter the index of the monster you wish to attack", monsterIndxs);
                     if (pInput != null) {
-                        Monster target = (Monster) indexToCharacter.get(pInput);
+                        Monster target = (Monster) indexToCharacter.get(pInput.toUpperCase());
                         hero.attack(target, BattleMechanics.getInstance(), BattleIO.getInstance()); // execute attack
+                        if (target.state.equals(State.FAINTED)) {
+                            removeCharacter(target);
+                            // give gold to all heroes
+                            lvMechanics.heroesGoldGain(target, heroes, io, summaryInstance);
+                            // give exp to all heroes
+                            lvMechanics.heroesExpGain(target, heroes, io, summaryInstance);
+                        }
                         turnConsumed = true;
                     }
                 }
@@ -338,18 +357,19 @@ public class LegendsOfValorWorld implements World{
         }
     }
 
+
+
     // currently only returns true and null
     // have not decided on the case where false may be needed
     public Boolean useInventory(Hero hero) {
-        Item selectedItem = null; // query for the item use
+        Item selectedItem = io.queryForInventoryUsage(hero);
 
         // null in this case represents the user's decision to not use anything from
         // the inventory
         if (selectedItem == null) {
             return null;
-        }
 
-        if (selectedItem instanceof Armor) {
+        } else if (selectedItem instanceof Armor) {
             // Take off hero's current equipped armor and put it into the inventory
             hero.equipArmor((Armor) selectedItem, io);
 
@@ -361,10 +381,31 @@ public class LegendsOfValorWorld implements World{
             // if the hero wants to use spell, is there any monster within range
             // if yes there are monsters within range, query for which monster
             // to attack
-<<<<<<< Updated upstream:src/LegendsOfValorWorld.java
-=======
-
->>>>>>> Stashed changes:LegendsOfValorWorld.java
+            if (getAttackable(hero).isEmpty()){ //check if monsters are in range
+                io.displayMsg("This hero has no monsters in range to cast a spell!");
+            }
+            else{
+                List<Character> attackable = getAttackable(hero);
+                List<String> monsterIndxs = new ArrayList<>();
+                io.displayMsg("Here are the Monsters that this hero can cast a spell on:");
+                for (Character c : attackable){ //display indexes of attackable monsters
+                    String indx = characterToIndex.get(c);
+                    monsterIndxs.add(indx);
+                    System.out.println("[*] - " + indx);
+                }
+                String pInput = io.queryString("Enter the index of the monster you wish to cast a spell on ", monsterIndxs);
+                if (pInput != null) {
+                    Monster target = (Monster) indexToCharacter.get(pInput.toUpperCase());
+                    hero.castSpell((Spell) selectedItem, target, BattleMechanics.getInstance(), BattleIO.getInstance()); // cast spell
+                    if (target.state.equals(State.FAINTED)) {
+                        removeCharacter(target);
+                        // give gold to all heroes
+                        lvMechanics.heroesGoldGain(target, heroes, io, summaryInstance);
+                        // give exp to all heroes
+                        lvMechanics.heroesExpGain(target, heroes, io, summaryInstance);
+                    }
+                }
+            }
 
         } else if (selectedItem instanceof Potion) {
             hero.usePotion((Potion) selectedItem, io);
@@ -374,7 +415,7 @@ public class LegendsOfValorWorld implements World{
     }
 
 
-    public boolean move(LVCell nextTile, Character character) {
+    public boolean move(LVCell nextTile, Character character, boolean display) {
         /*
         what are the conditions for which a character cannot move onto to the next tile
 
@@ -435,6 +476,9 @@ public class LegendsOfValorWorld implements World{
                         // the character has moved on to the next tile
                         positions[0] = characterToIndex.get(character);
                         nextTile.setPositions(positions);
+                        // also setCol and setRow
+                        character.setCol(nextTile.getCol());
+                        character.setRow(nextTile.getRow());
 
                         // the character has moved off the last tile
                         positions = currentTile.getPositions();
@@ -445,7 +489,9 @@ public class LegendsOfValorWorld implements World{
                         // we will have to update this HashMap as well
                         heroPositions.put((Hero)character, nextTile);
 
-                        io.displayMovementMsg(true, nextTile);
+                        if (display) {
+                            io.displayMovementMsg(true, nextTile);
+                        }
                         return true;
 
                     } else {
@@ -462,6 +508,9 @@ public class LegendsOfValorWorld implements World{
                     // the character has moved on to the next tile
                     positions[1] = characterToIndex.get(character);
                     nextTile.setPositions(positions);
+                    // also setCol and setRow
+                    character.setCol(nextTile.getCol());
+                    character.setRow(nextTile.getRow());
 
                     // the character has moved off the last tile
                     positions = currentTile.getPositions();
@@ -472,7 +521,9 @@ public class LegendsOfValorWorld implements World{
                     // we will have to update this HashMap as well
                     monsterPositions.put((Monster)character, nextTile);
 
-                    io.displayMovementMsg(true, nextTile);
+                    if (display) {
+                        io.displayMovementMsg(true, nextTile);
+                    }
                     return true;
 
                 } else {
@@ -484,11 +535,68 @@ public class LegendsOfValorWorld implements World{
         }
     } // end of method()
 
+    // For when the monster has gone to 0 HP and in State.Fainted
+    // remove the monster from the field
+    private void removeCharacter(Character character) {
+        if (character instanceof Monster) {
+            Monster monster = (Monster) character;
+            // io. display, character was defeated and 
+            // get the currentPosition of the monster
+            LVCell monsterCurrentTile = monsterPositions.get(monster);
+            // set LVCell's monster position to default, show it is no longer
+            // being shown on the map
+            String[] positions = monsterCurrentTile.getPositions();
+            positions[1] = Constants.DEFAULT_LVCELL_MONSTERPOSITION;
+            monsterCurrentTile.setPositions(positions);
+            // remove from monsterPositions, 
+            monsterPositions.remove(monster);
+            // remove from indexToCharacter,
+            String monsterIndex = characterToIndex.get(monster);
+            characterToIndex.remove(monster);
+            // and removec from characterToIndex
+            indexToCharacter.remove(monsterIndex);
+            // also remove from List<Monster> monsters
+            monsters.remove(monster);
+
+        } else { // can only be instanceof Hero
+            throw new IllegalArgumentException("Remove character is "+
+            "currently not supported for instanceof Hero.");
+        }
+    }
+
+    private void reviveHero(Hero hero) { // paladin
+        // get the currentTile of the hero
+        currentTile = heroPositions.get(hero);
+        LVCell nexus = heroToNexus.get(hero);
+        Hero tempHero = null;
+        // if there is another hero on the nexus right now, force the
+        // other hero to tp back to its nexus
+        if (!nexus.getPositions()[0].trim().isEmpty()) {
+            // find the hero that is on this LVCell right now
+            for (Map.Entry<Hero, LVCell> entry : heroPositions.entrySet()) {
+                LVCell heroTile = entry.getValue();
+                if (heroTile.equals(nexus)) {
+                    tempHero = entry.getKey();
+                }
+            }
+            LVCell tempHeroNexus = heroToNexus.get(tempHero);
+            move(tempHeroNexus, tempHero, false);
+        }
+        // now we can revive this hero at his nexus
+        move(nexus, hero, false);
+        hero.setHP( (int)(hero.getLevel() * 100) );
+        hero.setMP( (int)(hero.getMP() * 1.1) );
+        hero.setState(State.CONSCIOUS);
+        // X has been revived.
+        io.displayCharacterReviveMsg(hero, characterToIndex.get(hero));
+    }
+
 
     //given a character, return the characters they can attack
     //returns only characters of the opposite type of the attacker (no friendly fire allowed)
     public List<Character> getAttackable(Character attacker) {
-        LVCell[] inRange = worldMap.getAttackTiles(attacker.getRow(), attacker.getCol());
+        List<LVCell> inRange = worldMap.getAttackTiles(attacker.getRow(), attacker.getCol());
+        // System.out.println("inRange from getAttackable(): " + inRange.toString());
         List<Character> attackable = new ArrayList<>();
         Map<Character, LVCell> enemyPositions = new HashMap<>();
 
@@ -508,12 +616,14 @@ public class LegendsOfValorWorld implements World{
 
             // Check if the enemy's position is within the attack range cells
             for (LVCell cell : inRange) {
+                // System.out.println("cell from getAttackable(): "+ cell);
+                // System.out.println("character position from getAttackable(): "+ position);
                 if (cell.equals(position)) {
                     attackable.add(enemy);
                     break; // Stop checking once the enemy is found to be attackable
                 }
             }
-        }
+        } // paladin
 
         return attackable;
     }
@@ -521,26 +631,39 @@ public class LegendsOfValorWorld implements World{
     public void handleMonsterAction(Monster m){
         LVCell curPos = monsterPositions.get(m);
         List<Character> targets = getAttackable(m);
-        if (!targets.isEmpty()){ //if the monster has a hero in range, prioritize attacking them
-            int minHealth = targets.get(0).getHP();
-            Hero minHealthHero = (Hero) targets.get(0);
-            for(Character c: targets){ //find the target with the lowest HP
-                if (c.getHP() < minHealth){
+        /*
+         * we are prioritizing attacking over moving
+         * find the target with the lowest HP (that is not 0 HP) to attack
+         * if the target in range has 0 HP, move pass it
+         */
+        // System.out.println("!targets.isEmpty() : "+ !targets.isEmpty());
+        if (!targets.isEmpty()) {
+            int minHealth = Constants.INFINITE_HP;
+            Hero minHealthHero = null;
+            for (Character c : targets) { //find the target with the lowest HP
+                if (c.getHP() != 0 && c.getHP() < minHealth) {
                     minHealth = c.getHP();
                     minHealthHero = (Hero) c;
                 }
             }
-            m.attack(minHealthHero, BattleMechanics.getInstance(), BattleIO.getInstance());
-        }
-        else{ //no heroes in range to attack, move close to nexus by dropping down one row
-            LVCell nextTile = worldMap.getDownTile(curPos);
-            if (nextTile.getPositions()[1].trim().isEmpty()){ //monster slot is available at the next tile, move there
-                move(nextTile, m);
-            }
-            //otherwise skip monster turn, as monster cant attack and cant move, and no diagonal movement allowed
-        }
-    }
 
+            if (minHealthHero != null) {
+                m.attack(minHealthHero, BattleMechanics.getInstance(), BattleIO.getInstance());
+                if (minHealthHero.getState().equals(State.FAINTED)) {
+                    reviveHero(minHealthHero);
+                }
+                return;
+            } 
+        }
+        // there is no valid heroes in range to attack, move close 
+        // to nexus by dropping down one row
+        LVCell nextTile = worldMap.getDownTile(curPos);
+        if (nextTile.getPositions()[1].trim().isEmpty()){ //monster slot is available at the next tile, move there
+            move(nextTile, m, true);
+        }
+        //otherwise skip monster turn, as monster cant attack and cant move, and no diagonal movement allowed
+
+    }
 
     // *****************************************************************
 

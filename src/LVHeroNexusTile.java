@@ -20,7 +20,7 @@ public class LVHeroNexusTile extends LVCell implements TileBehavior{
          * Additional logic to have the heroes enter the market
          */
 
-        Market market = new Market(heroes, stock);
+        Market market = new Market(heroes, stock, LVSummary.getInstance());
         market.beginTrade();
     }
 }

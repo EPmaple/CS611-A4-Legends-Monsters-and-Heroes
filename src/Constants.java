@@ -40,4 +40,6 @@ public class Constants {
   public static final String DEFAULT_LVCELL_HEROPOSITION = "  ";
   public static final String DEFAULT_LVCELL_MONSTERPOSITION = "   ";
   public static final String LVNonAccessibleCellType = "&";
+  public static final int INFINITE_HP = 1000000;
+  public static final int LVGAME_GOLD_SCALE = 500;
 }

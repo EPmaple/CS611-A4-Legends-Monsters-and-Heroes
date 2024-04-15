@@ -135,7 +135,7 @@ https://www.geeksforgeeks.org/overriding-equals-method-in-java/
 1. Navigate to the directory "HW4" after unzipping the files
 2. Run the following instructions:
     * mkdir bin (if a bin folder does not exist already)
-    * javac -d bin *.java
+    * javac -d bin -sourcepath src src/*.java
     * java -cp bin Main
 
 ## Input/Output Example

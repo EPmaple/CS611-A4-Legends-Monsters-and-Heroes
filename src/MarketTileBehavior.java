@@ -26,7 +26,7 @@ public class MarketTileBehavior implements TileBehavior{
     // Return true
     // marketInstance.setHeroes(heroes);
     // marketInstance.setStock(stock);
-    Market market = new Market(heroes, stock);
+    Market market = new Market(heroes, stock, null);
     market.beginTrade();
   }
 }

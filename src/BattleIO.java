@@ -107,7 +107,7 @@ public class BattleIO extends IO{
     if (character.getState().equals(State.FAINTED)) {
       msg += character.getName() + " has fainted.";
     }
-    msg += "\n";
+    // msg += "\n";
     displayMsg(msg);
   }
 

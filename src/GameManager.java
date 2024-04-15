@@ -1,4 +1,4 @@
-package src;/*
+/*
  * src.GameManager.java
  * Tony Cen Cen
  * 3/30/2024
@@ -14,17 +14,19 @@ public class GameManager {
   }
 
   public void gameStart() {
-    int gameSelectionIndex = io.queryForGameSelection();
+    while (true) {
+      int gameSelectionIndex = io.queryForGameSelection();
 
-    switch (gameSelectionIndex) {
-      case 0:
-        MH();
-        break;
-      case 1:
-        LV();
-        break;
-      default:
-        break;
+      switch (gameSelectionIndex) {
+        case 0:
+          MH();
+          break;
+        case 1:
+          LV();
+          break;
+        default:
+          break;
+      }
     }
   }
 

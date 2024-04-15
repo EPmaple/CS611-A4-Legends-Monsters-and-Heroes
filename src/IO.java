@@ -95,6 +95,24 @@ public class IO {
     displayMsg(msg);
   }
 
+  public void displayGoldGainMsg(Hero hero, int goldGain) {
+    String msg = hero.getName() + " has gained " + Colors.ANSI_YELLOW +
+    goldGain + Colors.ANSI_RESET + " gold.";
+    displayMsg(msg);
+  }
+
+  public void displayExpIncMsg(Hero hero, int expIncAmt) {
+    String msg = hero.getName() + " has gained " + Colors.ANSI_YELLOW 
+    + expIncAmt + Colors.ANSI_RESET + " exp.";
+    displayMsg(msg);
+  }
+
+  public void displayLvlUpMsg(Hero hero) {
+    String msg = hero.getName() + " has leveled up and is now lvl." + 
+    Colors.ANSI_YELLOW + hero.getLevel() + Colors.ANSI_RESET;
+    displayMsg(msg);
+  }
+
   // ***************************************************************
   // queries
 
