@@ -1,3 +1,13 @@
+/*
+ * LVGame.java
+ * Tony Cen Cen
+ * 4/15/2024
+ * 
+ * LVGame extends from Game and serves as a game starter for Legends of 
+ * Valor, by querying from the user the necessary input params and start
+ * the game
+ */
+
 import java.util.*;
 
 public class LVGame extends Game{

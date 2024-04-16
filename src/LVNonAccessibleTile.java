@@ -1,3 +1,11 @@
+/*
+ * LVNonAccessibleTile.java
+ * Ankur
+ * 4/15/2024
+ * 
+ * LVCell representing a tile that is non-accessible
+ */
+
 public class LVNonAccessibleTile extends LVCell{
 	// the class represent Inaccesible cells which extend LOVCell
     public LVNonAccessibleTile(int row, int col) {

@@ -1,3 +1,11 @@
+/*
+ * Sorcerer.java
+ * Tony Cen Cen
+ * 4/15/2024
+ * 
+ * A concrete class of Hero specifying the Sorcerer hero type
+ */
+
 import java.util.*;
 public class Sorcerer extends Hero{
     public Sorcerer(String name, int level, int HP, State state, int MP, int strength,

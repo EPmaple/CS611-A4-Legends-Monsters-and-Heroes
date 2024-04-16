@@ -1,3 +1,13 @@
+/*
+ * LegendsOfValorIO.java
+ * Tony Cen Cen
+ * 4/15/2024
+ * 
+ * This class is responsible for displays, queries related to the game
+ * Legends of Valor, managing the game I/O through a consistent interface
+ */
+
+
 import java.util.*;
 
 public class LegendsOfValorIO extends IO{
@@ -151,7 +161,7 @@ public class LegendsOfValorIO extends IO{
         List<Hero> targetHeroes = new ArrayList<Hero>();
         for (Hero hero : heroes) {
             int heroCol = hero.getCol();
-            System.out.println(heroCol);
+            // System.out.println(heroCol);
             if (3 * (laneSelection - 1) + 1 == heroCol ||
                     3 * (laneSelection - 1) == heroCol) {
                 targetHeroes.add(hero);

@@ -1,3 +1,12 @@
+/*
+ * LVHeroNexusTile.java
+ * Ankur
+ * 4/15/2024
+ * 
+ * LVCell that represents the nexus for heroes, and is also responsible
+ * for initiating trade by market
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 

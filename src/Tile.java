@@ -1,3 +1,11 @@
+/*
+ * Tile.java
+ * Tony Cen Cen
+ * 4/15/2024
+ * 
+ * An abstract class to serve as a template to create other types of tiles
+ */
+
 public abstract class Tile {
 
     protected TileBehavior tileBehavior;

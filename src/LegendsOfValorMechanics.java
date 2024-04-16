@@ -1,3 +1,11 @@
+/*
+ * LegendsOfValorMechanics.java
+ * Tony Cen Cen
+ * 4/15/2024
+ * 
+ * This class is created to refactor some of the LVWorld mechanics
+ */
+
 import java.util.*;
 
 public class LegendsOfValorMechanics {

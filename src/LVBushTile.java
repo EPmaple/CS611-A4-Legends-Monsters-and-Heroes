@@ -1,3 +1,11 @@
+/*
+ * LVBushTile.java
+ * Ankur
+ * 4/15/2024
+ * 
+ * LVCell responsible for the boost of a hero's dexterity
+ */
+
 public class LVBushTile extends LVCell{
 	// the class represent bush cells which extend LOVCell
     public LVBushTile(int row, int col) {

@@ -1,3 +1,13 @@
+/*
+ * LVCell.java
+ * Ankur
+ * 4/15/2024
+ * 
+ * LVCell implements the Interface LVBoostStrategy, and serve as a template
+ * for other LVTiles to extend from. It's responsible for the basic
+ * interaction with a tile
+ */
+
 import java.util.ArrayList;
 
 public abstract class LVCell implements LVBoostStrategy {

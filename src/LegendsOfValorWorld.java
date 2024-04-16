@@ -1,3 +1,13 @@
+/*
+ * LegendsOfValorWorld.java
+ * Tony Cen Cen, Abdelazim
+ * 4/15/2024
+ * 
+ * This class is main body of the Legends of Valor game, responsible 
+ * initializing the game, making sure the game is in a consistent state,
+ * and allow the game to correctly function
+ */
+
 import java.util.*;
 
 public class LegendsOfValorWorld implements World{
@@ -123,7 +133,7 @@ public class LegendsOfValorWorld implements World{
                 generateMonsters(); 
             }
             
-            System.out.println("monsterPositions: " + monsterPositions);
+            // System.out.println("monsterPositions: " + monsterPositions);
             round += 1;
             io.displayMsg("round: " + round);
             // To spawn monsters every 8 rounds, another class, a monsterSpawner?

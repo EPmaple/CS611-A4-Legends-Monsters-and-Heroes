@@ -1,9 +1,9 @@
 
-# CS611-Assignment 4
-Legends: Monsters and Heroes
+# CS611-Assignment 5
+Legends of Valor
 ---------------------------------------------------------------------------
-Name: Tony Cen Cen
-Email: tcen17@bu.edu
+Name: Tony Cen Cen, Ankur Ankit Abdelazim Lokma
+Email: tcen17@bu.edu, alokma@bu.edu, anankit@bu.edu
 Student ID: U30361395
 
 ## Files
@@ -18,14 +18,21 @@ to Battle
 BattleMechanics.java: a class responsible for all the mechanics in Battle
 Character.java: Abstract class that Hero and Monster extends from, holds the
 general behavior and data members necessary for a Character
+Board.java: The class handles basic game board functions such as initialization, 
+cell type management, display, and move validation based on cell types.
+BoardFactory.java: A factory interface to specifying the creation of a board
 CharacterFactory.java: Factory responsible for loading all character .txt files
 , createHero() and createMonster()
 Colors.java: Colors class provides ANSI escape codes for text colors and methods to retrieve color codes.
 CommonTileBehavior.java: Part of the TileBehavior Strategy Pattern that
 represents the behavior of a CommoneTile
 Constants.java: This class provides all global constants for any gameManager.
+Consumable.java: A contract to clearly indicate that an item is consumable
 Coordinate.java: This class is used to implement Coordinate for each MHTile
-src.GameManager.java: The hub for users to indicate which gameManager to play.
+Dragon.java: Class for creating the specific concrete Dragon object
+Exoskeleton.java: Class for creating the specific concrete Exoskeleton object
+Game.java: An abstract class to serve as a template to create other Game starters
+GameManager.java: The hub for users to indicate which gameManager to play.
 Hero.java: Class containing behavior and states of Hero objects
 HeroType.java: Enum used to represent the different possible types of heroes
 InaccessibleTileBehavior.java: Part of the TileBehavior Strategy Pattern that
@@ -36,7 +43,31 @@ Item.java: Abstract class that Armor, Weapon, Potion, and Spell extends from,
 holds the general behavior and data members necessary for an Item
 ItemFactory.java: Facotry responsible for loading all item .txt files, and is
 reponsible for housing all the create methods for the various items
-Main.java: This class is used to initalize the src.GameManager.
+LegendsOfValorIO.java: This class is responsible for displays, queries related 
+to the game Legends of Valor, managing the game I/O through a consistent interface
+LegendsOfValorMechanics.java: This class is created to refactor some of the LVWorld mechanics
+LegendsOfValorWorld.java: This class is main body of the Legends of Valor game, 
+responsible initializing the game, making sure the game is in a consistent state, 
+and allow the game to correctly function
+LVBoostStrategy.java: Interface to implementing the boost of skills when a hero is on the tile
+LVBushTile.java: LVCell responsible for the boost of a hero's dexterity
+LVCaveTile.java: LVCell responsible for the boost of a hero's agility
+LVCell.java: LVCell implements the Interface LVBoostStrategy, and serve as a t
+emplate for other LVTiles to extend from. It's responsible for the basic interaction with a tile
+LVGame.java: LVGame extends from Game and serves as a game starter for Legends 
+of Valor, by querying from the user the necessary input params and start the game
+LVHeroNexusTile.java: LVCell that represents the nexus for heroes, and is also 
+responsible for initiating trade by market
+LVKoulouTile.java: LVCell responsible for boosting a hero's strength
+LVMap.java: LVMap extends from the Java Interface Board and provides all the 
+related functionalities in relation to the board it contains
+LVMapFactory.java: Factory to create the LVMap with the different types of tiles 
+LVMapFactoryTest.java: Class to test whether the map is working, commented wrote because is outdated
+LVMonsterNexusTile.java: LVCell representing the nexus of monster
+LVNonAccessibleTile.java: LVCell representing a tile that is non-accessible
+LVPlainTile.java: LVCell that does nothing but simply resets the boost of the hero
+LVSummary.java: A more customized summary class to print a win/loss summary for a game of Legends of Valor
+Main.java: This class is used to initalize the GameManager.
 MapFactory.java: Factory used to create a map (MHTile[][])
 Market.java: Class housing all the behaviors and states of the Market interface
 of our of gameManager
@@ -48,65 +79,58 @@ MHGame.java: Class that is the gameManager starter for the gameManager Legends: 
 Heroes, by first querying from the user necessary gameManager metrics
 Monster.java: Class containing behavior and states of Monster objects
 MonsterType.java: Enum used to represent the different possible types of monsters
+Paladin.java: A concrete class of Hero specifying the Paladin hero type
 Potion.java: Class containing behavior and states of Potion objects
+Sorcerer.java: A concrete class of Hero specifying the Sorcerer hero type
 Spell.java: Class containing behavior and states of Spell objects
 SpellType.java: Enum used to represent the different possible types of spells
+Spirit.java: A concrete class of Hero specifying the Spirit monster type
 State.java: Enum used to represent the different possible types of states of a
 character, allows for scalability in the future if more states are to be added
 Summary.java: Class to give a summary of the user from playing the gameManager
-MHTile.java: Class that houses all the behaviors and states of MHTile objects, part
-of the Strategy Pattern of TileBehavior
+MHTile.java: Class that houses all the behaviors and states of MHTile objects, part of the Strategy Pattern of TileBehavior
+Tile.java: An abstract class to serve as a template to create other types of tiles
 TileBehavior.java: A Java interface that implements the Strategy Pattern
 TileFactory.java: Factory responsible for creating Tiles of different TileBehavior
+Tradeable.java: An interface to clearly indicate that any classes that implements it should be able to be purchased and sold
+Warrior.java: A concrete class of Hero specifying the Warrior hero type
 Weapon.java: Class containing behavior and states of Weapon objects
-World.java: Class housing all the behaviors and states of the World interface
+HeroesAndMonstersWorld.java: Class housing all the behaviors and states of the World interface
 of our of gameManager; it is where the majority of the gameManager is built around
+World.java: A simple interface that serves as a contract on what methods are  essential in a new game world
 WorldIO.java: a subclass of IO filled with specific queries and displays related
 to World
 
 ## Diary
 ---------------------------------------------------------------------------
 
-1.) the tuesday one week before the due date, we got together before the
+1. the tuesday one week before the due date, we got together before the
 class and settled down on whose work we go going to base our code off of,
 which is Tony's, and we took some time to understand the assignment together.
 Then we split up the work.
-2.) After the Tuesday up until Saturday, Ankur took his time to do his part,
-which is LVBoostStrategy, LVTile's/Cell's, and LVMap (uses of magic numbers,
-missing safety checks, used completely different structure, lack comments)
-3.)
-
-
-
-Characters do not store their current tiles in them, whereas LVWorld would
-have HashMap<LVCell, Character> for both heroes and monsters
-
-Then when we query for user action based on whether the player is on a
-market tile, we will get the LVCell from the HashMap and check if it is
-HeroNexus, and we will do LVCell.interact() to enter the market
-NEED to update HeroNexus such that calling HeroNexus.interact() invokes
-market=
-
-displayInfoInWorld, would query from the user, to print info for heroes or
-monsters, and then iterate through heroes/monsters to print their info
-
-
-
+2. After the Tuesday up until Saturday, Ankur took his time to do his part,
+which is LVBoostStrategy, LVTile's/Cell's, and LVMap 
+3. I and Abdel started working on our parts on Sunday, which was LVWorld,
+LVMechanics, LVIO
+    I and Abdel kept in touch all day and frequently provided each other
+    with one's own progress
+4. Monday, we finished writing everything, Abdel helped me created the UML, I added
+comments to all new files (including the ones written by Ankur), wrote the
+documentation, and finished the readme; Abdel was also willing to help
+me debug
 
 
 ## Notes
 ---------------------------------------------------------------------------
 
-I purposedly coded the methods so that if in the future, if there are ways to 
-simply increase increase the lvl of the heroes, then it is possible to do so.
+I will like to note that some methods like getAttackable were written in 
+terms of Character, and not in terms of Hero/Monster, and this allows for 
+scalability
 
-When various queries are made to the users for choies, I have provided the user
-with the ability to "go back to the prior level of choices" in logical places
-
-I've used some coloring to highlight certain texts to made them stand out more
-
-I implemented BFS to make sure that every map given to the user is one with
-all accessible tiles connected
+I also took into the consideration that when a hero A dies, another hero B may
+already be on the hero A's nexus, and thus I implemented forced recall, for which
+in such a situation hero B would be forced recall back to his own nexus, and thus
+allowing A to be revived back at his own nexus
 
 ## Citations
 ---------------------------------------------------------------------------
@@ -132,7 +156,7 @@ https://www.geeksforgeeks.org/overriding-equals-method-in-java/
 ## How to compile and run
 ---------------------------------------------------------------------------
 
-1. Navigate to the directory "HW4" after unzipping the files
+1. Navigate to the directory "HW5" after unzipping the files
 2. Run the following instructions:
     * mkdir bin (if a bin folder does not exist already)
     * javac -d bin -sourcepath src src/*.java
@@ -140,6 +164,401 @@ https://www.geeksforgeeks.org/overriding-equals-method-in-java/
 
 ## Input/Output Example
 ---------------------------------------------------------------------------
+Legends of Valor:
+output:
+[>] Welcome! Please enter the number for the game you want ot play: 
+[0] Legends: Monsters and Heroes
+[1] Legends of Valor
+input:
+1
+output:
+[>] You are currently in the hero selection phase, and you will have to select 3 more heroes.
+[>] Enter 'paladin', 'sorcerer', or 'warrior' to select the type of the hero: 
+ Paladins are favored on strength and dexterity, 
+ Sorcerers are favored on dexterity and agility, 
+ Warriors are favored on strength and agility.
+input:
+paladin
+...... (hero selection same as in Heroes and Monsters)
+output: 
+[>] Would you like to place Sehanine_Sunbow on , lane 1 , lane 2 , lane 3 
+input:
+1
+output:
+[>] Would you like to place Skoraeus_Stonebones on , lane 2 , lane 3 
+input:
+2
+output:
+[>] Would you like to place Garl_Glittergold on , lane 3 
+input:
+3
+output:
+[>] round: 1
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+|         | |     M0  | | X   X   | |         | |     M1  | | X   X   | |         | |     M2  | 
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+| H1      | |         | | X   X   | | H2      | |         | | X   X   | | H3      | |         | 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+
+[>] It is currently H1 Sehanine_Sunbow's turn.
+[>] Enter W/w to move up, A/a to move left, S/s to move down, D/d to move right, U/u to use the inventory of a hero, I/i to show information about the heroes, T/t for tutorial,  P/p to teleport to another lane, R/r to recall back to nexus, F/f to attack a monster, M/m to enter market: 
+input:
+w
+output:
+[>] Successfully moved to tile at (6,0)
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+|         | |     M0  | | X   X   | |         | |     M1  | | X   X   | |         | |     M2  | 
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+| H1      | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+|         | |         | | X   X   | | H2      | |         | | X   X   | | H3      | |         | 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+
+[>] It is currently H2 Skoraeus_Stonebones's turn.
+[>] Enter W/w to move up, A/a to move left, S/s to move down, D/d to move right, U/u to use the inventory of a hero, I/i to show information about the heroes, T/t for tutorial,  P/p to teleport to another lane, R/r to recall back to nexus, F/f to attack a monster, M/m to enter market: 
+input:
+A
+output:
+[>] Failed to move in the requested direction.
+[>] It is currently H2 Skoraeus_Stonebones's turn.
+[>] Enter W/w to move up, A/a to move left, S/s to move down, D/d to move right, U/u to use the inventory of a hero, I/i to show information about the heroes, T/t for tutorial,  P/p to teleport to another lane, R/r to recall back to nexus, F/f to attack a monster, M/m to enter market: 
+input:
+m
+output:
+[>] You have entered the market.
+[>] Skoraeus_Stonebones is currently lvl.1, and currently has 2500 gold.
+[>] Enter B/b to buy any item from the stock available, or S/s to sell any item from Skoraeus_Stonebones's inventory, or F/f to finish trading for Skoraeus_Stonebones, or T/t for tutorial:
+......(same market as in Heroes and Monsters)
+output:
+[>] It is currently H2 Skoraeus_Stonebones's turn.
+[>] Enter W/w to move up, A/a to move left, S/s to move down, D/d to move right, U/u to use the inventory of a hero, I/i to show information about the heroes, T/t for tutorial,  P/p to teleport to another lane, R/r to recall back to nexus, F/f to attack a monster, M/m to enter market: 
+input:
+i
+output:
+[>] Enter 'hero' to display info of all heroes, 'monster' to display info of all monsters: 
+input:
+hero
+output:
+[>] Below are information about heroes on the map: 
+[>] H1Name: Sehanine_Sunbow
+Level: 1
+State: CONSCIOUS
+HP: 100
+MP: 300
+Strength: 750
+Agility: 700
+Dexterity: 700
+Gold: 2500
+Experience: 7/10
+Hero Type: PALADIN
+Currently Equipped Weapon: null
+Currently Equipped Armor: null
+Inventory: []
+
+[>] H2Name: Skoraeus_Stonebones
+Level: 1
+State: CONSCIOUS
+HP: 100
+MP: 250
+Strength: 650
+Agility: 600
+Dexterity: 350
+Gold: 2500
+Experience: 4/10
+Hero Type: PALADIN
+Currently Equipped Weapon: null
+Currently Equipped Armor: null
+Inventory: []
+
+[>] H3Name: Garl_Glittergold
+Level: 1
+State: CONSCIOUS
+HP: 100
+MP: 100
+Strength: 600
+Agility: 500
+Dexterity: 400
+Gold: 2500
+Experience: 5/10
+Hero Type: PALADIN
+Currently Equipped Weapon: null
+Currently Equipped Armor: null
+Inventory: []
+
+[>] Above are information about heroes on the map: 
+......
+output:
+[>] It is currently H2 Skoraeus_Stonebones's turn.
+[>] Enter W/w to move up, A/a to move left, S/s to move down, D/d to move right, U/u to use the inventory of a hero, I/i to show information about the heroes, T/t for tutorial,  P/p to teleport to another lane, R/r to recall back to nexus, F/f to attack a monster, M/m to enter market: 
+input:
+t
+output:
+[>] Basic Actions:
+MOVEMENT:The W/A/S/D keys allow you to move, press them to go up/left/down/right respectively.
+INVENTORY:Press U to access your heroes inventories, you will need to specify which hero's inventory to access after pressing U.
+INFORMATION:Press I to display Hero or Monster inventory, you will need to specify if you want to see Hero or Monster info after pressing I.
+MARKETS:When on a nexus tile, press M to access its market, this option cannot be executed unless a Hero is standing on one of the nexus tiles
+TUTORIAL:Obviously, T displays the tutorial
+TELEPORTATION TO ANOTHER LANE:allows you to teleport to a another lane that has a hero, specifically to the right/left/down of this hero
+RECALL TO NEXUS:Press R to teleport a hero back to their nexus, you will need to specify which hero to teleport after pressing R
+ATTACKING:Press F to attack with a hero, you will need to specify which hero to attack with after pressing F
+......
+output:
+[>] It is currently H2 Skoraeus_Stonebones's turn.
+[>] Enter W/w to move up, A/a to move left, S/s to move down, D/d to move right, U/u to use the inventory of a hero, I/i to show information about the heroes, T/t for tutorial,  P/p to teleport to another lane, R/r to recall back to nexus, F/f to attack a monster, M/m to enter market: 
+input:
+p
+output:
+[>] Enter the lane you want H2 Skoraeus_Stonebones to teleport to: 1, 3, 
+input:
+1
+output:
+[>] Which hero in lane 1 would you like to teleport to: H1, 
+input:
+h1
+output:
+[>] Enter the direction in relation to the targetHero you want to teleport to: right, down, 
+input:
+right
+output:
+[>] Successfully moved to tile at (6,1)
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+|         | |     M0  | | X   X   | |         | |     M1  | | X   X   | |         | |     M2  | 
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+| H1      | | H2      | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+|         | |         | | X   X   | |         | |         | | X   X   | | H3      | |         | 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+......
+output:
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+|         | |     M0  | | X   X   | |         | |     M1  | | X   X   | |         | |     M2  | 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+| H1      | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+|         | | H2      | | X   X   | |         | |         | | X   X   | | H3      | |         | 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+[>] It is currently H2 Skoraeus_Stonebones's turn.
+[>] Enter W/w to move up, A/a to move left, S/s to move down, D/d to move right, U/u to use the inventory of a hero, I/i to show information about the heroes, T/t for tutorial,  P/p to teleport to another lane, R/r to recall back to nexus, F/f to attack a monster: 
+input:
+r
+output:
+[>] Successfully moved to tile at (7,3)
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+|         | |     M0  | | X   X   | |         | |     M1  | | X   X   | |         | |     M2  | 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+| H1      | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+|         | |         | | X   X   | |         | |         | | X   X   | | H3      | |         | 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+|         | |         | | X   X   | | H2      | |         | | X   X   | |         | |         | 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+......
+output:
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+|         | |     M0  | | X   X   | |         | |     M1  | | X   X   | |         | |     M2  | 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+| H1      | |         | | X   X   | |         | |         | | X   X   | | H3      | |         | 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+|         | |         | | X   X   | | H2      | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+
+[>] It is currently H1 Sehanine_Sunbow's turn.
+[>] Enter W/w to move up, A/a to move left, S/s to move down, D/d to move right, U/u to use the inventory of a hero, I/i to show information about the heroes, T/t for tutorial,  P/p to teleport to another lane, R/r to recall back to nexus, F/f to attack a monster: 
+input:
+f
+output:
+[>] Here are the Monsters that this hero can attack:
+[*] - M0
+[>] Enter the index of the monster you wish to attack
+input:
+m0
+output:
+[>] Sehanine_Sunbow attacked Natsunomeryu for 225.
+[>] Natsunomeryu has 0 HP left. Natsunomeryu has fainted.
+[>] Sehanine_Sunbow has gained 100 gold.
+[>] Skoraeus_Stonebones has gained 100 gold.
+[>] Garl_Glittergold has gained 100 gold.
+[>] Sehanine_Sunbow has gained 2 exp.
+[>] Skoraeus_Stonebones has gained 2 exp.
+[>] Garl_Glittergold has gained 2 exp.
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |     M1  | | X   X   | |         | |     M2  | 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+| H1      | |         | | X   X   | |         | |         | | X   X   | | H3      | |         | 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+|         | |         | | X   X   | | H2      | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+......
+output:
+[>] round: 9
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+|         | |     M3  | | X   X   | |         | |     M4  | | X   X   | |         | |     M5  | 
+M---------M M---------M &---------& M---------M M---------M &---------& M---------M M---------M 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+|         | | H1      | | X   X   | |         | |         | | X   X   | |         | | H3      | 
+C---------C P---------P &---------& C---------C P---------P &---------& B---------B B---------B 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+|         | |         | | X   X   | | H2      | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& P---------P K---------K &---------& K---------K B---------B 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+B---------B P---------P &---------& B---------B B---------B &---------& P---------P P---------P 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& P---------P P---------P &---------& P---------P P---------P 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+K---------K P---------P &---------& K---------K P---------P &---------& C---------C K---------K 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+P---------P P---------P &---------& B---------B P---------P &---------& K---------K C---------C 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+|         | |         | | X   X   | |         | |         | | X   X   | |         | |         | 
+H---------H H---------H &---------& H---------H H---------H &---------& H---------H H---------H 
+[>] It is currently H1 Sehanine_Sunbow's turn.
+[>] Enter W/w to move up, A/a to move left, S/s to move down, D/d to move right, U/u to use the inventory of a hero, I/i to show information about the heroes, T/t for tutorial,  P/p to teleport to another lane, R/r to recall back to nexus, F/f to attack a monster: 
+input:
+w
+output:
+[>] Successfully moved to tile at (0,1)
+[>] Victory! You've won the game in 9 rounds
+
+[>] Total gold gain: 900
+[>] Total gold spent: 0
+[>] Highest hero level achieved: 2
+[>] Would you like to play another round of Legends of Valor?(y/n)
+input:
+n
+output:
+[>] Welcome! Please enter the number for the game you want ot play: 
+[0] Legends: Monsters and Heroes
+[1] Legends of Valor
+input:
+q
+
+---------------------------------------------------------------------------------
+
+Heroes and Monsters:
 output:
 [>] Welcome! Please enter the number for the gameManager you want ot play:
 [0] Legends: Monsters and Heroes

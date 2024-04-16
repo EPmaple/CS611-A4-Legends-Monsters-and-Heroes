@@ -1,5 +1,5 @@
 /*
- * Tile.java
+ * MHTile.java
  * Tony Cen Cen
  * 3/30/2024
  * 

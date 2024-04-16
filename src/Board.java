@@ -1,3 +1,11 @@
+/*
+ * Board.java
+ * Ankur
+ * 4/15/2024
+ * 
+ * The class handles basic game board functions such as initialization, cell 
+ * type management, display, and move validation based on cell types.
+ */
 
 public class Board {
 

@@ -1,4 +1,11 @@
-
+/*
+ * LVSummary.java
+ * Tony Cen Cen
+ * 4/15/2024
+ * 
+ * A more customized summary class to print a win/loss summary for 
+ * a game of Legends of Valor
+ */
 
 public class LVSummary extends Summary {
     private static LVSummary instance;

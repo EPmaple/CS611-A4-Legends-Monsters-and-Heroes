@@ -1,3 +1,11 @@
+/*
+ * LVBoostStrategy.java
+ * Ankur
+ * 4/15/2024
+ * 
+ * Interface to implementing the boost of skills when a hero is on
+ * the tile
+ */
 
 public interface LVBoostStrategy {
 	//interface for cells which can doBoostBehavior and resetBoost

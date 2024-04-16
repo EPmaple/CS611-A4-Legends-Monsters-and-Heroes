@@ -1,5 +1,5 @@
 /*
- * src.GameManager.java
+ * GameManager.java
  * Tony Cen Cen
  * 3/30/2024
  * 

@@ -1,3 +1,12 @@
+/*
+ * LVMap.java
+ * Abdelazim, Ankur, Tony
+ * 4/15/2024
+ * 
+ * LVMap extends from the Java Interface Board and provides all the 
+ * related functionalities in relation to the board it contains
+ */
+
 import java.util.*;
 
 public class LVMap extends Board{
